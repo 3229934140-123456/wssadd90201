@@ -1,0 +1,110 @@
+@use '@/styles/variables.scss' as *;
+
+.card {
+  display: flex;
+  background: $color-bg-card;
+  border-radius: $radius-lg;
+  overflow: hidden;
+  margin-bottom: $spacing-md;
+  box-shadow: $shadow-card;
+  transition: all $transition-base;
+
+  &:active {
+    transform: scale(0.98);
+  }
+
+  &.compact {
+    .content {
+      padding: $spacing-md;
+    }
+    
+    .description {
+      display: none;
+    }
+    
+    .image {
+      width: 120rpx;
+      height: 120rpx;
+    }
+  }
+}
+
+.image {
+  width: 180rpx;
+  height: 180rpx;
+  flex-shrink: 0;
+  background: $color-bg-hover;
+}
+
+.content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: $spacing-md $spacing-lg;
+  min-width: 0;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: $spacing-sm;
+  gap: $spacing-sm;
+}
+
+.name {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+  @include text-ellipsis;
+  flex: 1;
+}
+
+.description {
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  line-height: 1.5;
+  @include text-ellipsis-multi(2);
+  margin-bottom: $spacing-sm;
+  flex: 1;
+}
+
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.category {
+  padding: 4rpx $spacing-sm;
+  background: $color-bg-hover;
+  border-radius: $radius-round;
+}
+
+.categoryText {
+  font-size: $font-size-xs;
+  color: $color-text-tertiary;
+}
+
+.favorite {
+  width: 56rpx;
+  height: 56rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: $radius-round;
+  background: $color-bg-hover;
+  transition: all $transition-base;
+
+  &.active {
+    background: rgba(255, 122, 158, 0.1);
+  }
+
+  &:active {
+    transform: scale(0.9);
+  }
+}
+
+.favoriteIcon {
+  font-size: 28rpx;
+}

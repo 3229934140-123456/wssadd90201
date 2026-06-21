@@ -1,0 +1,263 @@
+@import '@/styles/variables.scss';
+
+.pageContainer {
+  min-height: 100vh;
+  background: linear-gradient(180deg, #FFF5F8 0%, #FFFFFF 200rpx);
+}
+
+.content {
+  padding: $spacing-xl $spacing-4xl $spacing-6xl;
+}
+
+.pageHeader {
+  padding: $spacing-4xl $spacing-4xl $spacing-xl;
+  text-align: center;
+}
+
+.pageTitle {
+  font-size: $font-size-2xl;
+  font-weight: $font-weight-bold;
+  color: $text-color-primary;
+  margin-bottom: $spacing-xs;
+}
+
+.pageDesc {
+  font-size: $font-size-base;
+  color: $text-color-secondary;
+}
+
+.activityList {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-3xl;
+}
+
+.activityCard {
+  background: #FFFFFF;
+  border-radius: $radius-2xl;
+  overflow: hidden;
+  box-shadow: $shadow-md;
+  transition: all 0.3s ease;
+
+  &.expanded {
+    transform: scale(1.01);
+  }
+}
+
+.activityImage {
+  width: 100%;
+  height: 300rpx;
+  background: #FFF5F8;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 100rpx;
+}
+
+.activityTag {
+  position: absolute;
+  top: $spacing-lg;
+  left: $spacing-lg;
+  padding: $spacing-xs $spacing-lg;
+  background: $primary-color;
+  color: #FFFFFF;
+  font-size: $font-size-xs;
+  border-radius: $radius-full;
+  font-weight: $font-weight-medium;
+}
+
+.activityTime {
+  position: absolute;
+  bottom: $spacing-lg;
+  right: $spacing-lg;
+  padding: $spacing-xs $spacing-lg;
+  background: rgba(0, 0, 0, 0.6);
+  color: #FFFFFF;
+  font-size: $font-size-xs;
+  border-radius: $radius-full;
+}
+
+.activityBody {
+  padding: $spacing-xl;
+}
+
+.activityTitle {
+  font-size: $font-size-xl;
+  font-weight: $font-weight-bold;
+  color: $text-color-primary;
+  margin-bottom: $spacing-sm;
+}
+
+.activityDesc {
+  font-size: $font-size-base;
+  color: $text-color-secondary;
+  line-height: 1.6;
+  margin-bottom: $spacing-lg;
+}
+
+.activityFooter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.activityStats {
+  display: flex;
+  gap: $spacing-lg;
+}
+
+.statItem {
+  display: flex;
+  align-items: center;
+  gap: $spacing-xs;
+  font-size: $font-size-sm;
+  color: $text-color-secondary;
+}
+
+.expandBtn {
+  display: flex;
+  align-items: center;
+  gap: $spacing-xs;
+  font-size: $font-size-sm;
+  color: $primary-color;
+  font-weight: $font-weight-medium;
+
+  .arrow {
+    transition: transform 0.3s ease;
+
+    &.expanded {
+      transform: rotate(180deg);
+    }
+  }
+}
+
+.expandedContent {
+  background: #FAFAFA;
+  padding: $spacing-xl;
+  border-top: 1rpx solid #F0F0F0;
+}
+
+.sectionTitle {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-bold;
+  color: $text-color-primary;
+  margin-bottom: $spacing-lg;
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;
+}
+
+.rulesList {
+  margin-bottom: $spacing-3xl;
+}
+
+.ruleItem {
+  display: flex;
+  gap: $spacing-md;
+  margin-bottom: $spacing-md;
+  font-size: $font-size-base;
+  color: $text-color-secondary;
+  line-height: 1.6;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.ruleIndex {
+  width: 40rpx;
+  height: 40rpx;
+  background: $primary-color;
+  color: #FFFFFF;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-bold;
+  flex-shrink: 0;
+}
+
+.rewardsGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: $spacing-lg;
+}
+
+.rewardItem {
+  background: #FFFFFF;
+  border-radius: $radius-lg;
+  padding: $spacing-lg $spacing-md;
+  text-align: center;
+  border: 2rpx solid #FFE4EC;
+}
+
+.rewardIcon {
+  font-size: 48rpx;
+  margin-bottom: $spacing-sm;
+}
+
+.rewardName {
+  font-size: $font-size-xs;
+  color: $text-color-primary;
+  line-height: 1.4;
+  margin-bottom: $spacing-xs;
+}
+
+.rewardStock {
+  font-size: $font-size-xs;
+  color: $text-color-placeholder;
+}
+
+.joinBtn {
+  margin-top: $spacing-3xl;
+  padding: $spacing-lg;
+  background: linear-gradient(135deg, $primary-color 0%, #FF9EBB 100%);
+  color: #FFFFFF;
+  text-align: center;
+  border-radius: $radius-xl;
+  font-size: $font-size-lg;
+  font-weight: $font-weight-bold;
+  box-shadow: $shadow-md;
+
+  &:active {
+    opacity: 0.9;
+    transform: scale(0.98);
+  }
+}
+
+.emptyState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: $spacing-6xl $spacing-4xl;
+}
+
+.emptyIcon {
+  font-size: 120rpx;
+  margin-bottom: $spacing-xl;
+}
+
+.emptyText {
+  font-size: $font-size-base;
+  color: $text-color-secondary;
+  text-align: center;
+  line-height: 1.6;
+}
+
+.statusBar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 8rpx;
+  background: #F0F0F0;
+}
+
+.statusProgress {
+  height: 100%;
+  background: linear-gradient(90deg, $primary-color 0%, #FF9EBB 100%);
+  border-radius: 0 4rpx 4rpx 0;
+}

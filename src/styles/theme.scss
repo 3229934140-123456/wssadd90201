@@ -1,0 +1,69 @@
+// ============================================
+// 主题配色变量（恢复星球 - 温馨治愈风）
+// ============================================
+
+// 品牌主题色：蜜桃粉 - 温暖、治愈，符合医美年轻女性用户
+$color-primary: #FF7A9E;
+$color-primary-light: #FFB6C1;
+$color-primary-dark: #E85C83;
+$color-primary-gradient: linear-gradient(135deg, #FF7A9E 0%, #FFB6C1 100%);
+
+// 食物红绿灯颜色
+$color-food-green: #00B578;
+$color-food-yellow: #FFAA00;
+$color-food-red: #F53F3F;
+
+// 能量色：梦幻紫
+$color-energy: #7C6BFF;
+$color-energy-light: #A89BFF;
+
+// 星球背景色
+$color-planet-bg: #F0EBFF;
+
+// 功能色
+$color-success: #00B578;
+$color-warning: #FFAA00;
+$color-error: #F53F3F;
+$color-info: #7C6BFF;
+
+// 背景色
+$color-bg-page: #FFF5F7;
+$color-bg-page-gradient: linear-gradient(180deg, #FFF5F7 0%, #FFFFFF 100%);
+$color-bg-card: #ffffff;
+$color-bg-hover: #FFF0F3;
+
+// 文本色
+$color-text-primary: #1D2129;
+$color-text-secondary: #4E5969;
+$color-text-tertiary: #86909C;
+$color-text-disabled: #C9CDD4;
+$color-text-white: #ffffff;
+$color-text-pink: #FF7A9E;
+
+// 边框色
+$color-border: #FFE5EB;
+$color-divider: #FFF0F3;
+
+// ============================================
+// 别名变量（兼容代码中的其他命名方式）
+// ============================================
+$primary-color: $color-primary;
+$primary-color-light: $color-primary-light;
+$energy-color: $color-energy;
+$success-color: $color-success;
+$warning-color: $color-warning;
+$danger-color: $color-error;
+
+$text-color-primary: $color-text-primary;
+$text-color-secondary: $color-text-secondary;
+$text-color-tertiary: $color-text-tertiary;
+$text-color-placeholder: $color-text-disabled;
+$text-color-white: $color-text-white;
+
+$food-green: $color-food-green;
+$food-yellow: $color-food-yellow;
+$food-red: $color-food-red;
+
+$bg-color: $color-bg-page;
+$card-bg: $color-bg-card;
+$border-color: $color-border;

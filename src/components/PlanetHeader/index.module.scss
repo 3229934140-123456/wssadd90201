@@ -1,0 +1,209 @@
+@use '@/styles/variables.scss' as *;
+
+.container {
+  position: relative;
+  margin: 0 (-$page-padding) $spacing-lg;
+  padding: 0 $page-padding;
+  overflow: hidden;
+}
+
+.gradientBg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, #FF7A9E 0%, #FFB6C1 50%, #FFE5EB 100%);
+  border-radius: 0 0 $radius-xl $radius-xl;
+}
+
+.content {
+  position: relative;
+  padding: $spacing-xxl 0 $spacing-xl;
+}
+
+.topRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: $spacing-xl;
+}
+
+.projectInfo {
+  display: flex;
+  align-items: center;
+  gap: $spacing-md;
+}
+
+.projectIcon {
+  width: 80rpx;
+  height: 80rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 40rpx;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: $radius-md;
+}
+
+.projectText {
+  display: flex;
+  flex-direction: column;
+}
+
+.projectName {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-semibold;
+  color: $color-text-white;
+  margin-bottom: 4rpx;
+}
+
+.projectDay {
+  font-size: $font-size-sm;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.middleRow {
+  margin-bottom: $spacing-xl;
+}
+
+.progressSection {
+  display: flex;
+  align-items: center;
+  gap: $spacing-xl;
+  padding: $spacing-lg;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: $radius-lg;
+  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.08);
+}
+
+.progressInfo {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.progressTitle {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+  margin-bottom: $spacing-xs;
+}
+
+.progressDesc {
+  font-size: $font-size-md;
+  color: $color-primary;
+  font-weight: $font-weight-medium;
+  margin-bottom: $spacing-sm;
+}
+
+.progressTip {
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  line-height: 1.5;
+}
+
+.actionRow {
+  display: flex;
+  gap: $spacing-md;
+}
+
+.comfortBtn {
+  @include button-reset;
+  flex: 1;
+  height: $button-height-lg;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: $radius-button;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: $spacing-sm;
+  transition: all $transition-base;
+
+  &:active {
+    transform: scale(0.98);
+    opacity: 0.9;
+  }
+
+  .btnIcon {
+    font-size: 32rpx;
+  }
+
+  .btnText {
+    font-size: $font-size-md;
+    font-weight: $font-weight-medium;
+    color: $color-primary;
+  }
+}
+
+.shareBtn {
+  @include button-reset;
+  flex: 1;
+  height: $button-height-lg;
+  background: rgba(255, 255, 255, 0.3);
+  border: 2rpx solid rgba(255, 255, 255, 0.5);
+  border-radius: $radius-button;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: $spacing-sm;
+  transition: all $transition-base;
+
+  &:active {
+    transform: scale(0.98);
+    opacity: 0.9;
+  }
+
+  .btnIcon {
+    font-size: 32rpx;
+  }
+
+  .btnText {
+    font-size: $font-size-md;
+    font-weight: $font-weight-medium;
+    color: $color-text-white;
+  }
+}
+
+.noProject {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: $spacing-xxl $spacing-lg;
+  text-align: center;
+}
+
+.noProjectIcon {
+  font-size: 100rpx;
+  margin-bottom: $spacing-md;
+}
+
+.noProjectTitle {
+  font-size: $font-size-xxl;
+  font-weight: $font-weight-bold;
+  color: $color-text-white;
+  margin-bottom: $spacing-sm;
+}
+
+.noProjectDesc {
+  font-size: $font-size-md;
+  color: rgba(255, 255, 255, 0.85);
+  margin-bottom: $spacing-xl;
+}
+
+.selectBtn {
+  @include button-reset;
+  height: $button-height-lg;
+  padding: 0 $spacing-xxl;
+  background: $color-text-white;
+  border-radius: $radius-button;
+  color: $color-primary;
+  font-size: $font-size-md;
+  font-weight: $font-weight-semibold;
+  transition: all $transition-base;
+
+  &:active {
+    transform: scale(0.98);
+    opacity: 0.9;
+  }
+}

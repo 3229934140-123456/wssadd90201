@@ -1,0 +1,254 @@
+@use '@/styles/variables.scss' as *;
+
+.pageContainer {
+  min-height: 100vh;
+  padding: 0 $page-padding;
+  padding-bottom: $spacing-xxl;
+}
+
+.header {
+  background: linear-gradient(135deg, #FF7A9E 0%, #FFB6C1 100%);
+  margin: 0 (-$page-padding) $spacing-lg;
+  padding: $spacing-xxl $page-padding;
+  border-radius: 0 0 $radius-xl $radius-xl;
+}
+
+.checkInStats {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: $spacing-lg;
+}
+
+.statItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+}
+
+.statValue {
+  font-size: $font-size-huge;
+  font-weight: $font-weight-bold;
+  color: $color-text-white;
+  line-height: 1;
+  margin-bottom: $spacing-xs;
+}
+
+.statLabel {
+  font-size: $font-size-sm;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.statDivider {
+  width: 1rpx;
+  height: 60rpx;
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.energyCard {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: $spacing-lg;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: $radius-lg;
+  box-shadow: $shadow-card;
+}
+
+.energyInfo {
+  display: flex;
+  align-items: center;
+  gap: $spacing-md;
+}
+
+.energyIcon {
+  font-size: 48rpx;
+}
+
+.energyText {
+  display: flex;
+  flex-direction: column;
+}
+
+.energyValue {
+  font-size: $font-size-xxl;
+  font-weight: $font-weight-bold;
+  color: $color-energy;
+  line-height: 1;
+}
+
+.energyLabel {
+  font-size: $font-size-xs;
+  color: $color-text-tertiary;
+}
+
+.checkInBtn {
+  @include button-reset;
+  height: $button-height-md;
+  padding: 0 $spacing-xl;
+  background: linear-gradient(135deg, #7C6BFF 0%, #A89BFF 100%);
+  border-radius: $radius-button;
+  color: $color-text-white;
+  font-size: $font-size-md;
+  font-weight: $font-weight-semibold;
+  transition: all $transition-base;
+
+  &.checked {
+    background: $color-bg-hover;
+    color: $color-text-tertiary;
+  }
+
+  &:active:not(.checked) {
+    transform: scale(0.98);
+    opacity: 0.9;
+  }
+}
+
+.supervisorSection {
+  background: $color-bg-card;
+  border-radius: $radius-lg;
+  padding: $spacing-lg;
+  margin-bottom: $spacing-lg;
+  box-shadow: $shadow-card;
+}
+
+.supervisorHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: $spacing-md;
+}
+
+.supervisorTitle {
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;
+  font-size: $font-size-lg;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+}
+
+.supervisorCode {
+  display: flex;
+  align-items: center;
+  gap: $spacing-md;
+  padding: $spacing-md;
+  background: $color-planet-bg;
+  border-radius: $radius-md;
+}
+
+.codeText {
+  font-size: $font-size-xl;
+  font-weight: $font-weight-bold;
+  color: $color-energy;
+  letter-spacing: 8rpx;
+}
+
+.codeActions {
+  display: flex;
+  gap: $spacing-sm;
+}
+
+.codeBtn {
+  @include button-reset;
+  height: $button-height-sm;
+  padding: 0 $spacing-md;
+  background: $color-primary;
+  border-radius: $radius-round;
+  color: $color-text-white;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-medium;
+
+  &:active {
+    opacity: 0.9;
+    transform: scale(0.98);
+  }
+}
+
+.sectionTitle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: $spacing-md;
+}
+
+.sectionTitleText {
+  font-size: $font-size-xl;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+}
+
+.taskTabs {
+  display: flex;
+  gap: $spacing-sm;
+  margin-bottom: $spacing-md;
+}
+
+.taskTab {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: $spacing-md;
+  background: $color-bg-card;
+  border-radius: $radius-md;
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  font-weight: $font-weight-medium;
+  transition: all $transition-base;
+
+  &.active {
+    background: $color-primary-gradient;
+    color: $color-text-white;
+    box-shadow: $shadow-glow-pink;
+  }
+}
+
+.tasksList {
+  display: flex;
+  flex-direction: column;
+}
+
+.blindBoxSection {
+  margin-bottom: $spacing-lg;
+}
+
+.emptyState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: $spacing-xxl $spacing-lg;
+  text-align: center;
+}
+
+.emptyIcon {
+  font-size: 80rpx;
+  margin-bottom: $spacing-md;
+}
+
+.emptyTitle {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+  margin-bottom: $spacing-xs;
+}
+
+.emptyDesc {
+  font-size: $font-size-sm;
+  color: $color-text-tertiary;
+}
+
+.completedCount {
+  display: flex;
+  align-items: center;
+  gap: $spacing-xs;
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+}
+
+.completedNum {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-bold;
+  color: $color-food-green;
+}

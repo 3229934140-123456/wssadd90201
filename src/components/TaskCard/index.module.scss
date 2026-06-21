@@ -1,0 +1,158 @@
+@use '@/styles/variables.scss' as *;
+
+.card {
+  background: $color-bg-card;
+  border-radius: $radius-lg;
+  padding: $spacing-lg;
+  margin-bottom: $spacing-md;
+  box-shadow: $shadow-card;
+  transition: all $transition-base;
+
+  &:active {
+    transform: scale(0.98);
+  }
+
+  &.completed {
+    opacity: 0.7;
+    background: linear-gradient(135deg, rgba(0, 181, 120, 0.05) 0%, rgba(255, 255, 255, 1) 100%);
+  }
+
+  &.locked {
+    opacity: 0.5;
+    background: $color-bg-hover;
+  }
+}
+
+.header {
+  display: flex;
+  gap: $spacing-md;
+  margin-bottom: $spacing-md;
+}
+
+.icon {
+  width: 80rpx;
+  height: 80rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 40rpx;
+  background: $color-bg-hover;
+  border-radius: $radius-md;
+  flex-shrink: 0;
+}
+
+.info {
+  flex: 1;
+  min-width: 0;
+}
+
+.titleRow {
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;
+  margin-bottom: $spacing-xs;
+}
+
+.title {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+  @include text-ellipsis;
+  flex: 1;
+}
+
+.typeTag {
+  padding: 4rpx $spacing-sm;
+  border-radius: $radius-round;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-medium;
+  flex-shrink: 0;
+}
+
+.description {
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  line-height: 1.5;
+  @include text-ellipsis-multi(2);
+}
+
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: $spacing-md;
+  border-top: 1rpx solid $color-divider;
+}
+
+.energy {
+  display: flex;
+  align-items: center;
+  gap: $spacing-xs;
+}
+
+.energyIcon {
+  font-size: $font-size-md;
+}
+
+.energyText {
+  font-size: $font-size-md;
+  font-weight: $font-weight-semibold;
+  color: $color-energy;
+}
+
+.completeBtn {
+  @include button-reset;
+  height: $button-height-sm;
+  padding: 0 $spacing-lg;
+  background: $color-primary-gradient;
+  border-radius: $radius-button;
+  color: $color-text-white;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-medium;
+  transition: all $transition-base;
+
+  &:active {
+    opacity: 0.9;
+    transform: scale(0.98);
+  }
+}
+
+.completedTag {
+  display: flex;
+  align-items: center;
+  gap: $spacing-xs;
+  padding: $spacing-xs $spacing-md;
+  background: rgba(0, 181, 120, 0.1);
+  border-radius: $radius-round;
+}
+
+.checkIcon {
+  color: $color-food-green;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-bold;
+}
+
+.completedText {
+  font-size: $font-size-sm;
+  color: $color-food-green;
+  font-weight: $font-weight-medium;
+}
+
+.lockedTag {
+  display: flex;
+  align-items: center;
+  gap: $spacing-xs;
+  padding: $spacing-xs $spacing-md;
+  background: rgba(134, 144, 156, 0.1);
+  border-radius: $radius-round;
+}
+
+.lockIcon {
+  font-size: $font-size-sm;
+}
+
+.lockedText {
+  font-size: $font-size-sm;
+  color: $color-text-tertiary;
+  font-weight: $font-weight-medium;
+}

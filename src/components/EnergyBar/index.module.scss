@@ -1,0 +1,20 @@
+@use '@/styles/variables.scss' as *;
+
+.container {
+  display: inline-flex;
+  align-items: center;
+  gap: $spacing-xs;
+  background: linear-gradient(135deg, rgba(124, 107, 255, 0.1) 0%, rgba(168, 155, 255, 0.1) 100%);
+  padding: $spacing-xs $spacing-md;
+  border-radius: $radius-round;
+}
+
+.icon {
+  line-height: 1;
+}
+
+.text {
+  font-weight: $font-weight-semibold;
+  color: $color-energy;
+  line-height: 1;
+}

@@ -1,0 +1,149 @@
+// 必须转发和使用 theme.scss
+@forward './theme.scss';
+@use './theme.scss' as *;
+
+// ============================================
+// 全局 SCSS 变量（恢复星球 - 温馨治愈风）
+// ============================================
+
+// 屏幕适配（设计稿基准 750rpx）
+$screen-width: 750rpx;
+$page-padding: 32rpx; // 页面左右安全边距
+$page-spacing: 32rpx;
+$max-content-width: 686rpx; // 750 - 32*2，内容最大宽度
+
+// 间距（8px 网格系统）
+$spacing-xs: 8rpx;
+$spacing-sm: 16rpx;
+$spacing-md: 24rpx;
+$spacing-lg: 32rpx;
+$spacing-xl: 48rpx;
+$spacing-xxl: 64rpx;
+$spacing-2xl: 64rpx; // 别名，兼容不同命名方式
+$spacing-3xl: 80rpx;
+$spacing-4xl: 96rpx;
+$spacing-5xl: 128rpx;
+$spacing-6xl: 160rpx;
+
+// 圆角（语义化）
+$radius-xs: 4rpx; // 小元素：标签、徽章
+$radius-sm: 8rpx; // 卡片内小元素
+$radius-md: 16rpx; // 常规卡片
+$radius-lg: 24rpx; // 大卡片
+$radius-xl: 32rpx; // 特大卡片
+$radius-2xl: 40rpx; // 超大卡片
+$radius-button: 48rpx; // 按钮专用（全圆角，符合主流小程序）
+$radius-round: 999rpx; // 完全圆形
+$radius-full: 9999rpx; // 完全圆形
+
+// 按钮高度
+$button-height-sm: 64rpx; // 小按钮（次要操作）
+$button-height-md: 80rpx; // 常规按钮（主流标准）
+$button-height-lg: 96rpx; // 大按钮（主要操作、底部固定）
+
+// 阴影（语义化）- 适配粉色主题
+$shadow-sm: 0 2rpx 8rpx rgba(0, 0, 0, 0.06); // 轻微阴影
+$shadow-md: 0 4rpx 16rpx rgba(0, 0, 0, 0.08); // 中等阴影
+$shadow-lg: 0 8rpx 24rpx rgba(0, 0, 0, 0.12); // 大阴影
+$shadow-card: 0 4rpx 20rpx rgba(255, 122, 158, 0.08); // 卡片阴影
+$shadow-card-hover: 0 8rpx 24rpx rgba(255, 122, 158, 0.15); // 卡片悬浮
+$shadow-float: 0 8rpx 32rpx rgba(0, 0, 0, 0.1); // 浮层阴影
+$shadow-popup: 0 8rpx 32rpx rgba(0, 0, 0, 0.15); // 弹窗阴影
+$shadow-glow-pink: 0 4rpx 20rpx rgba(255, 122, 158, 0.3); // 粉色发光
+$shadow-glow-purple: 0 4rpx 20rpx rgba(124, 107, 255, 0.3); // 紫色发光
+
+// 字体大小
+$font-size-xs: 22rpx;
+$font-size-sm: 24rpx;
+$font-size-md: 28rpx;
+$font-size-base: 28rpx;
+$font-size-lg: 30rpx;
+$font-size-xl: 34rpx;
+$font-size-xxl: 40rpx;
+$font-size-huge: 44rpx; // 大标题
+$font-size-2xl: 48rpx;
+$font-size-3xl: 56rpx;
+$font-size-4xl: 72rpx;
+
+// 行高
+$line-height-tight: 1.3;
+$line-height-normal: 1.5;
+$line-height-loose: 1.8;
+
+// 字重
+$font-weight-normal: 400;
+$font-weight-medium: 500;
+$font-weight-semibold: 600;
+$font-weight-bold: 700;
+
+// 过渡动画
+$transition-fast: 0.15s ease;
+$transition-base: 0.25s ease;
+$transition-slow: 0.35s ease;
+$transition-bounce: 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55); // 弹性动画
+
+// ============================================
+// 常用 Mixin
+// ============================================
+// 单行文本省略
+@mixin text-ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+// 多行文本省略
+@mixin text-ellipsis-multi($lines: 2) {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: $lines;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+// 清除浮动
+@mixin clearfix {
+  &::after {
+    content: '';
+    display: table;
+    clear: both;
+  }
+}
+
+// 水平垂直居中
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+// 横向滚动容器（微信小程序兼容）
+@mixin scroll-x-container {
+  white-space: nowrap;
+}
+
+// 横向滚动子项（微信小程序兼容，必须配合 scroll-x-container 使用）
+@mixin scroll-x-item($width) {
+  display: inline-block;
+  width: $width;
+  vertical-align: top;
+  white-space: normal; // 恢复子项内部换行
+}
+
+// Button 样式重置与保护
+// 使用方法：@include button-reset;
+@mixin button-reset {
+  padding: 0;
+  margin: 0;
+  line-height: normal;
+  text-align: inherit;
+  white-space: nowrap; // 强制不换行
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box; // 关键：确保 padding 和 border 不会撑大尺寸
+
+  &::after {
+    border: none;
+  }
+}

@@ -1,0 +1,275 @@
+@import '@/styles/variables.scss';
+
+.pageContainer {
+  min-height: 100vh;
+  background: linear-gradient(180deg, #FFF5F8 0%, #FFFFFF 200rpx);
+}
+
+.content {
+  padding: $spacing-xl $spacing-4xl $spacing-6xl;
+}
+
+.pageHeader {
+  padding: $spacing-4xl $spacing-4xl $spacing-xl;
+  text-align: center;
+}
+
+.pageTitle {
+  font-size: $font-size-2xl;
+  font-weight: $font-weight-bold;
+  color: $text-color-primary;
+  margin-bottom: $spacing-xs;
+}
+
+.pageDesc {
+  font-size: $font-size-base;
+  color: $text-color-secondary;
+}
+
+.sharePreviewCard {
+  background: #FFFFFF;
+  border-radius: $radius-2xl;
+  padding: $spacing-xl;
+  margin-bottom: $spacing-3xl;
+  box-shadow: $shadow-card;
+}
+
+.previewTitle {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-bold;
+  color: $text-color-primary;
+  margin-bottom: $spacing-lg;
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;
+}
+
+.previewImageContainer {
+  width: 100%;
+  border-radius: $radius-xl;
+  overflow: hidden;
+  background: #FFF5F8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  image {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+}
+
+.dayInfo {
+  text-align: center;
+  padding: $spacing-lg 0;
+  font-size: $font-size-base;
+  color: $text-color-secondary;
+}
+
+.dayHighlight {
+  color: $primary-color;
+  font-weight: $font-weight-bold;
+  font-size: $font-size-xl;
+}
+
+.foodSection {
+  background: #FFFFFF;
+  border-radius: $radius-2xl;
+  padding: $spacing-xl;
+  margin-bottom: $spacing-3xl;
+  box-shadow: $shadow-card;
+}
+
+.sectionTitle {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-bold;
+  color: $text-color-primary;
+  margin-bottom: $spacing-xl;
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;
+}
+
+.foodTips {
+  font-size: $font-size-sm;
+  color: $text-color-secondary;
+  margin-bottom: $spacing-lg;
+  padding: $spacing-md;
+  background: #FFF5F8;
+  border-radius: $radius-lg;
+  line-height: 1.5;
+}
+
+.foodGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: $spacing-lg;
+}
+
+.foodItem {
+  display: flex;
+  align-items: center;
+  gap: $spacing-md;
+  padding: $spacing-lg;
+  background: #FAFAFA;
+  border-radius: $radius-lg;
+  border: 2rpx solid transparent;
+  transition: all 0.25s ease;
+
+  &.selected {
+    background: #FFF0F5;
+    border-color: $primary-color;
+  }
+
+  &:active {
+    transform: scale(0.98);
+  }
+}
+
+.foodCheckbox {
+  width: 40rpx;
+  height: 40rpx;
+  border-radius: $radius-sm;
+  border: 3rpx solid #DDDDDD;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: all 0.25s ease;
+
+  .selected & {
+    background: $primary-color;
+    border-color: $primary-color;
+  }
+}
+
+.checkmark {
+  color: #FFFFFF;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-bold;
+  opacity: 0;
+  transform: scale(0.5);
+  transition: all 0.25s ease;
+
+  .selected & {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.foodInfo {
+  flex: 1;
+  min-width: 0;
+}
+
+.foodName {
+  font-size: $font-size-base;
+  color: $text-color-primary;
+  font-weight: $font-weight-medium;
+  margin-bottom: $spacing-xs;
+}
+
+.foodEmoji {
+  font-size: $font-size-lg;
+}
+
+.foodLevel {
+  font-size: $font-size-xs;
+  color: #52C41A;
+  background: #F6FFED;
+  padding: 2rpx $spacing-sm;
+  border-radius: $radius-xs;
+  display: inline-block;
+}
+
+.actionSection {
+  background: #FFFFFF;
+  border-radius: $radius-2xl;
+  padding: $spacing-xl;
+  box-shadow: $shadow-card;
+}
+
+.actionButtons {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-lg;
+}
+
+.primaryBtn {
+  width: 100%;
+  height: $button-height-lg;
+  background: linear-gradient(135deg, $primary-color 0%, #FF9EBB 100%);
+  color: #FFFFFF;
+  border-radius: $radius-xl;
+  font-size: $font-size-lg;
+  font-weight: $font-weight-bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: $spacing-sm;
+  box-shadow: $shadow-glow-pink;
+  transition: all 0.25s ease;
+
+  &:active {
+    opacity: 0.9;
+    transform: scale(0.98);
+  }
+}
+
+.secondaryBtn {
+  width: 100%;
+  height: $button-height-lg;
+  background: #FFFFFF;
+  color: $primary-color;
+  border: 2rpx solid $primary-color;
+  border-radius: $radius-xl;
+  font-size: $font-size-lg;
+  font-weight: $font-weight-bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: $spacing-sm;
+  transition: all 0.25s ease;
+
+  &:active {
+    background: #FFF5F8;
+    transform: scale(0.98);
+  }
+}
+
+.btnRow {
+  display: flex;
+  gap: $spacing-lg;
+}
+
+.btnRow .primaryBtn,
+.btnRow .secondaryBtn {
+  flex: 1;
+}
+
+.emptyState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: $spacing-6xl $spacing-4xl;
+}
+
+.emptyIcon {
+  font-size: 120rpx;
+  margin-bottom: $spacing-xl;
+}
+
+.emptyText {
+  font-size: $font-size-base;
+  color: $text-color-secondary;
+  text-align: center;
+  line-height: 1.6;
+}
+
+.selectedCount {
+  font-size: $font-size-sm;
+  color: $primary-color;
+  font-weight: $font-weight-medium;
+}

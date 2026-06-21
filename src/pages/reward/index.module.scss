@@ -1,0 +1,392 @@
+@import '@/styles/variables.scss';
+
+.pageContainer {
+  min-height: 100vh;
+  background: linear-gradient(180deg, #FFF5F8 0%, #FFFFFF 300rpx);
+}
+
+.energyHeader {
+  background: linear-gradient(135deg, $primary-color 0%, #FF9EBB 100%);
+  padding: $spacing-6xl $spacing-4xl;
+  border-radius: 0 0 $radius-2xl $radius-2xl;
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    width: 300rpx;
+    height: 300rpx;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    top: -100rpx;
+    right: -100rpx;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    width: 200rpx;
+    height: 200rpx;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 50%;
+    bottom: -50rpx;
+    left: -50rpx;
+  }
+}
+
+.energyInfo {
+  position: relative;
+  z-index: 1;
+}
+
+.energyTitle {
+  font-size: $font-size-lg;
+  color: rgba(255, 255, 255, 0.9);
+  margin-bottom: $spacing-sm;
+}
+
+.energyValue {
+  font-size: $font-size-4xl;
+  font-weight: $font-weight-bold;
+  color: #FFFFFF;
+  margin-bottom: $spacing-lg;
+
+  text {
+    font-size: $font-size-xl;
+    margin-left: $spacing-sm;
+    font-weight: $font-weight-normal;
+  }
+}
+
+.energyTips {
+  font-size: $font-size-base;
+  color: rgba(255, 255, 255, 0.85);
+  background: rgba(255, 255, 255, 0.15);
+  padding: $spacing-sm $spacing-lg;
+  border-radius: $radius-full;
+  display: inline-block;
+}
+
+.tabs {
+  display: flex;
+  padding: $spacing-xl $spacing-4xl;
+  gap: $spacing-lg;
+}
+
+.tabItem {
+  flex: 1;
+  text-align: center;
+  padding: $spacing-lg;
+  border-radius: $radius-lg;
+  background: #F5F5F5;
+  font-size: $font-size-base;
+  color: $text-color-secondary;
+  transition: all 0.3s ease;
+
+  &.active {
+    background: $primary-color;
+    color: #FFFFFF;
+    font-weight: $font-weight-medium;
+    box-shadow: $shadow-md;
+  }
+}
+
+.content {
+  padding: 0 $spacing-4xl $spacing-6xl;
+}
+
+.sectionTitle {
+  font-size: $font-size-xl;
+  font-weight: $font-weight-bold;
+  color: $text-color-primary;
+  margin-bottom: $spacing-xl;
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;
+}
+
+.rewardGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: $spacing-xl;
+}
+
+.rewardCard {
+  background: #FFFFFF;
+  border-radius: $radius-xl;
+  overflow: hidden;
+  box-shadow: $shadow-sm;
+  transition: all 0.3s ease;
+
+  &:active {
+    transform: scale(0.98);
+  }
+}
+
+.rewardImage {
+  width: 100%;
+  height: 240rpx;
+  background: #FFF5F8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 80rpx;
+}
+
+.rewardInfo {
+  padding: $spacing-lg;
+}
+
+.rewardName {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-bold;
+  color: $text-color-primary;
+  margin-bottom: $spacing-xs;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.rewardDesc {
+  font-size: $font-size-xs;
+  color: $text-color-secondary;
+  margin-bottom: $spacing-md;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  line-height: 1.4;
+  min-height: 40rpx;
+}
+
+.rewardFooter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.rewardCost {
+  font-size: $font-size-base;
+  color: $energy-color;
+  font-weight: $font-weight-bold;
+  display: flex;
+  align-items: center;
+  gap: $spacing-xs;
+}
+
+.exchangeBtn {
+  padding: $spacing-sm $spacing-lg;
+  background: $primary-color;
+  color: #FFFFFF;
+  font-size: $font-size-xs;
+  border-radius: $radius-full;
+
+  &.disabled {
+    background: #E0E0E0;
+    color: #999999;
+  }
+}
+
+.stockInfo {
+  font-size: $font-size-xs;
+  color: #FF9EBB;
+  margin-top: $spacing-sm;
+}
+
+.userRewardList {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-xl;
+}
+
+.userRewardCard {
+  background: #FFFFFF;
+  border-radius: $radius-xl;
+  padding: $spacing-xl;
+  display: flex;
+  gap: $spacing-xl;
+  box-shadow: $shadow-sm;
+  position: relative;
+  overflow: hidden;
+
+  &.used {
+    opacity: 0.6;
+
+    &::after {
+      content: '已使用';
+      position: absolute;
+      top: $spacing-lg;
+      right: -$spacing-xl;
+      background: #999999;
+      color: #FFFFFF;
+      padding: $spacing-xs $spacing-3xl;
+      font-size: $font-size-xs;
+      transform: rotate(30deg);
+    }
+  }
+}
+
+.userRewardImage {
+  width: 160rpx;
+  height: 160rpx;
+  border-radius: $radius-lg;
+  background: #FFF5F8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 60rpx;
+  flex-shrink: 0;
+}
+
+.userRewardContent {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.userRewardName {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-bold;
+  color: $text-color-primary;
+  margin-bottom: $spacing-xs;
+}
+
+.userRewardCode {
+  font-size: $font-size-sm;
+  color: $text-color-secondary;
+  font-family: 'Courier New', monospace;
+  background: #F8F8F8;
+  padding: $spacing-xs $spacing-md;
+  border-radius: $radius-md;
+  display: inline-block;
+  margin-bottom: $spacing-sm;
+}
+
+.userRewardDate {
+  font-size: $font-size-xs;
+  color: $text-color-placeholder;
+}
+
+.useRewardBtn {
+  padding: $spacing-sm $spacing-xl;
+  background: $primary-color;
+  color: #FFFFFF;
+  font-size: $font-size-sm;
+  border-radius: $radius-md;
+  align-self: flex-start;
+}
+
+.emptyState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: $spacing-6xl $spacing-4xl;
+}
+
+.emptyIcon {
+  font-size: 120rpx;
+  margin-bottom: $spacing-xl;
+}
+
+.emptyText {
+  font-size: $font-size-base;
+  color: $text-color-secondary;
+  text-align: center;
+  line-height: 1.6;
+}
+
+.emptyAction {
+  margin-top: $spacing-xl;
+  padding: $spacing-md $spacing-3xl;
+  background: $primary-color;
+  color: #FFFFFF;
+  font-size: $font-size-base;
+  border-radius: $radius-full;
+}
+
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modalContent {
+  width: 600rpx;
+  background: #FFFFFF;
+  border-radius: $radius-2xl;
+  padding: $spacing-4xl;
+  text-align: center;
+}
+
+.modalIcon {
+  font-size: 100rpx;
+  margin-bottom: $spacing-xl;
+}
+
+.modalTitle {
+  font-size: $font-size-xl;
+  font-weight: $font-weight-bold;
+  color: $text-color-primary;
+  margin-bottom: $spacing-lg;
+}
+
+.modalDesc {
+  font-size: $font-size-base;
+  color: $text-color-secondary;
+  line-height: 1.6;
+  margin-bottom: $spacing-3xl;
+}
+
+.modalRewardInfo {
+  background: #FFF5F8;
+  border-radius: $radius-lg;
+  padding: $spacing-xl;
+  margin-bottom: $spacing-3xl;
+}
+
+.modalRewardName {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-bold;
+  color: $primary-color;
+  margin-bottom: $spacing-xs;
+}
+
+.modalRewardCost {
+  font-size: $font-size-base;
+  color: $energy-color;
+  font-weight: $font-weight-medium;
+}
+
+.modalButtons {
+  display: flex;
+  gap: $spacing-lg;
+}
+
+.modalBtn {
+  flex: 1;
+  padding: $spacing-lg;
+  border-radius: $radius-lg;
+  font-size: $font-size-base;
+  font-weight: $font-weight-medium;
+
+  &.cancel {
+    background: #F5F5F5;
+    color: $text-color-secondary;
+  }
+
+  &.confirm {
+    background: $primary-color;
+    color: #FFFFFF;
+  }
+}
