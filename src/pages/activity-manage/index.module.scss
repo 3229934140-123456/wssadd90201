@@ -449,3 +449,20 @@
   font-weight: $font-weight-bold;
   color: $primary-color;
 }
+
+.detailBtn {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: $spacing-lg;
+  padding: $spacing-md $spacing-lg;
+  background: #FFF5F8;
+  border-radius: $radius-lg;
+  color: $primary-color;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-medium;
+
+  &:active {
+    opacity: 0.8;
+  }
+}

@@ -254,6 +254,16 @@ const ActivityManagePage: React.FC = () => {
                     <Text className={styles.rewardStock}>库存: {reward.stock}</Text>
                   </View>
                 ))}
+
+                <View 
+                  className={styles.detailBtn}
+                  onClick={() => {
+                    Taro.navigateTo({ url: `/pages/activity-detail/index?id=${activity.id}` })
+                  }}
+                >
+                  <Text>查看运营明细</Text>
+                  <Text>→</Text>
+                </View>
               </View>
             ))}
           </View>

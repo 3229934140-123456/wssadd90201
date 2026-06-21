@@ -1,9 +1,12 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useMemo } from 'react'
 import { View, Text, ScrollView, Image } from '@tarojs/components'
 import Taro, { useRouter, useDidShow, useShareAppMessage, useShareTimeline } from '@tarojs/taro'
 import { useAppStore } from '@/store/useAppStore'
 import { generateShareImage } from '@/utils/share'
+import { ShareMealHistory } from '@/types'
 import classnames from 'classnames'
+import { getToday } from '@/utils/date'
+import dayjs from 'dayjs'
 import styles from './index.module.scss'
 
 interface PresetFood {
@@ -23,10 +26,15 @@ const presetGreenFoods: PresetFood[] = [
 
 const SharePage: React.FC = () => {
   const router = useRouter()
-  const { user, currentDay } = useAppStore()
+  const { user, currentDay, addShareMealHistory, shareMealHistories } = useAppStore()
   const [selectedFoods, setSelectedFoods] = useState<string[]>([])
   const [shareImageUrl, setShareImageUrl] = useState<string>('')
   const [day, setDay] = useState<number>(currentDay || 1)
+  const [showHistory, setShowHistory] = useState(false)
+
+  const historyList = useMemo(() => {
+    return shareMealHistories.slice(0, 10)
+  }, [shareMealHistories])
 
   useEffect(() => {
     const dayParam = router.params.day
@@ -148,6 +156,17 @@ const SharePage: React.FC = () => {
             Taro.hideLoading()
             Taro.showToast({ title: '保存成功', icon: 'success' })
             console.log('[SharePage] 图片已保存到相册')
+            
+            const historyItem: ShareMealHistory = {
+              id: `smh${Date.now()}`,
+              date: getToday(),
+              foods: [...selectedFoods],
+              day,
+              checkInDays: user.checkInDays,
+              imageUrl: shareImageUrl,
+              createdAt: dayjs().format('YYYY-MM-DD HH:mm')
+            }
+            addShareMealHistory(historyItem)
           },
           fail: (err) => {
             Taro.hideLoading()
@@ -180,6 +199,13 @@ const SharePage: React.FC = () => {
         Taro.showToast({ title: '请点击右上角分享', icon: 'none' })
       }
     })
+  }
+
+  const handleUseHistory = (history: ShareMealHistory) => {
+    setSelectedFoods(history.foods)
+    setDay(history.day)
+    setShowHistory(false)
+    Taro.showToast({ title: '已载入历史餐单', icon: 'success' })
   }
 
   return (
@@ -252,6 +278,43 @@ const SharePage: React.FC = () => {
               )
             })}
           </View>
+        </View>
+
+        <View className={styles.historySection}>
+          <View className={styles.sectionTitle} onClick={() => setShowHistory(!showHistory)}>
+            <Text>📋</Text>
+            <Text>历史餐单</Text>
+            <Text className={styles.historyCount}>（{historyList.length} 条）</Text>
+            <Text className={styles.historyArrow}>{showHistory ? '▲' : '▼'}</Text>
+          </View>
+
+          {showHistory && (
+            <View className={styles.historyList}>
+              {historyList.length > 0 ? (
+                historyList.map(history => (
+                  <View key={history.id} className={styles.historyCard}>
+                    <View className={styles.historyInfo}>
+                      <Text className={styles.historyDate}>{history.date}</Text>
+                      <Text className={styles.historyFoods}>
+                        {history.foods.slice(0, 3).join('、')}
+                        {history.foods.length > 3 && ` 等${history.foods.length}种`}
+                      </Text>
+                    </View>
+                    <View 
+                      className={styles.useHistoryBtn}
+                      onClick={() => handleUseHistory(history)}
+                    >
+                      使用
+                    </View>
+                  </View>
+                ))
+              ) : (
+                <View className={styles.emptyHistory}>
+                  <Text className={styles.emptyHistoryText}>暂无历史餐单，保存分享图后会自动记录</Text>
+                </View>
+              )}
+            </View>
+          )}
         </View>
 
         <View className={styles.actionSection}>

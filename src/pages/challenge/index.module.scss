@@ -252,3 +252,154 @@
   font-weight: $font-weight-bold;
   color: $color-food-green;
 }
+
+.dateSelector {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: $spacing-xs;
+  margin-bottom: $spacing-lg;
+  padding: $spacing-xs $spacing-lg;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: $radius-full;
+  align-self: center;
+  width: fit-content;
+  margin-left: auto;
+  margin-right: auto;
+
+  &:active {
+    background: rgba(255, 255, 255, 0.3);
+  }
+}
+
+.dateText {
+  font-size: $font-size-base;
+  font-weight: $font-weight-medium;
+  color: $color-text-white;
+}
+
+.dateArrow {
+  font-size: $font-size-xs;
+  color: $color-text-white;
+}
+
+.calendarCard {
+  background: $color-bg-card;
+  border-radius: $radius-lg;
+  padding: $spacing-lg;
+  margin-bottom: $spacing-lg;
+  box-shadow: $shadow-card;
+}
+
+.calendarHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: $spacing-md;
+}
+
+.calendarMonth {
+  font-size: $font-size-base;
+  font-weight: $font-weight-bold;
+  color: $color-text-primary;
+}
+
+.calendarNav {
+  width: 60rpx;
+  height: 60rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: $font-size-xl;
+  color: $color-text-secondary;
+  border-radius: $radius-md;
+
+  &:active {
+    background: $color-bg-hover;
+  }
+}
+
+.weekDays {
+  display: flex;
+  margin-bottom: $spacing-xs;
+}
+
+.weekDay {
+  flex: 1;
+  text-align: center;
+  font-size: $font-size-xs;
+  color: $color-text-tertiary;
+  padding: $spacing-xs 0;
+}
+
+.calendarDays {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.calendarDay {
+  width: calc(100% / 7);
+  aspect-ratio: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  border-radius: $radius-md;
+
+  &.otherMonth {
+    opacity: 0.3;
+  }
+
+  &.today {
+    .calendarDayText {
+      color: $color-primary;
+      font-weight: $font-weight-bold;
+    }
+  }
+
+  &.selected {
+    background: $color-primary;
+
+    .calendarDayText {
+      color: $color-text-white;
+    }
+  }
+
+  &.checkedIn:not(.selected) {
+    .calendarDayText {
+      color: $color-food-green;
+    }
+  }
+
+  &:active {
+    background: $color-bg-hover;
+  }
+}
+
+.calendarDayText {
+  font-size: $font-size-sm;
+  color: $color-text-primary;
+}
+
+.checkInDot {
+  width: 12rpx;
+  height: 12rpx;
+  border-radius: 50%;
+  background: $color-food-green;
+  margin-top: 4rpx;
+}
+
+.historyTip {
+  padding: $spacing-md 0;
+  text-align: center;
+  margin-top: $spacing-lg;
+}
+
+.historyTipText {
+  font-size: $font-size-xs;
+  color: $color-text-tertiary;
+  background: $color-bg-hover;
+  padding: $spacing-sm $spacing-lg;
+  border-radius: $radius-full;
+}

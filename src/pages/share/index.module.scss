@@ -293,3 +293,79 @@
   text-align: center;
   line-height: 1.5;
 }
+
+.historySection {
+  margin-bottom: $spacing-2xl;
+}
+
+.historyCount {
+  font-size: $font-size-sm;
+  color: $primary-color;
+  font-weight: $font-weight-medium;
+}
+
+.historyArrow {
+  margin-left: auto;
+  font-size: $font-size-xs;
+  color: $text-color-secondary;
+}
+
+.historyList {
+  margin-top: $spacing-md;
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-sm;
+}
+
+.historyCard {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: $spacing-md $spacing-lg;
+  background: #FAFAFA;
+  border-radius: $radius-lg;
+
+  &:active {
+    background: #F5F5F5;
+  }
+}
+
+.historyInfo {
+  flex: 1;
+}
+
+.historyDate {
+  font-size: $font-size-base;
+  font-weight: $font-weight-medium;
+  color: $text-color-primary;
+  margin-bottom: $spacing-xs;
+  display: block;
+}
+
+.historyFoods {
+  font-size: $font-size-xs;
+  color: $text-color-secondary;
+  display: block;
+}
+
+.useHistoryBtn {
+  padding: $spacing-sm $spacing-lg;
+  background: $primary-color;
+  color: #FFFFFF;
+  font-size: $font-size-sm;
+  border-radius: $radius-full;
+
+  &:active {
+    opacity: 0.8;
+  }
+}
+
+.emptyHistory {
+  padding: $spacing-2xl $spacing-lg;
+  text-align: center;
+}
+
+.emptyHistoryText {
+  font-size: $font-size-sm;
+  color: $text-color-secondary;
+}

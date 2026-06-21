@@ -12,7 +12,8 @@ export default defineAppConfig({
     'pages/share/index',
     'pages/comfort/index',
     'pages/activity-manage/index',
-    'pages/reward-redeem/index'
+    'pages/reward-redeem/index',
+    'pages/activity-detail/index'
   ],
   window: {
     backgroundTextStyle: 'light',

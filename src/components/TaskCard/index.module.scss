@@ -21,6 +21,10 @@
     opacity: 0.5;
     background: $color-bg-hover;
   }
+
+  &.disabled {
+    pointer-events: none;
+  }
 }
 
 .header {

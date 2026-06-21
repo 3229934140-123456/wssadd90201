@@ -1,12 +1,18 @@
 import React, { useState, useMemo } from 'react'
-import { View, Text, ScrollView, Button, RefreshControl } from '@tarojs/components'
+import { View, Text, ScrollView, RefreshControl } from '@tarojs/components'
 import Taro, { useDidShow } from '@tarojs/taro'
 import { useAppStore } from '@/store/useAppStore'
-import { getToday } from '@/utils/date'
 import PlanetHeader from '@/components/PlanetHeader'
 import TaskCard from '@/components/TaskCard'
 import BlindBox from '@/components/BlindBox'
 import styles from './index.module.scss'
+
+interface WeekDay {
+  day: string
+  date: number
+  isToday: boolean
+  completed: boolean
+}
 
 const HomePage: React.FC = () => {
   const [refreshing, setRefreshing] = useState(false)
@@ -16,11 +22,10 @@ const HomePage: React.FC = () => {
     return tasks.filter(t => t.status !== 'locked').slice(0, 4)
   }, [tasks])
 
-  const weekDays = useMemo(() => {
-    const days = []
+  const weekDays = useMemo<WeekDay[]>(() => {
+    const days: WeekDay[] = []
     const weekdays = ['日', '一', '二', '三', '四', '五', '六']
     const today = new Date()
-    const todayStr = getToday()
     
     for (let i = -3; i <= 3; i++) {
       const date = new Date(today)
@@ -42,7 +47,7 @@ const HomePage: React.FC = () => {
       })
     }
     return days
-  }, [todayTasks, todayCheckIn, lastCheckInDate, user.checkInDays])
+  }, [todayCheckIn, lastCheckInDate, user.checkInDays])
 
   const handleRefresh = () => {
     setRefreshing(true)

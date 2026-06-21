@@ -9,6 +9,7 @@ interface TaskCardProps {
   task: TaskItem
   onComplete?: (taskId: string) => void
   onViewDetail?: (taskId: string) => void
+  disabled?: boolean
 }
 
 const typeConfig = {
@@ -18,10 +19,13 @@ const typeConfig = {
   custom: { label: '其他', color: '#FFAA00', bgColor: 'rgba(255, 170, 0, 0.1)' }
 }
 
-const TaskCard: React.FC<TaskCardProps> = ({ task, onComplete, onViewDetail }) => {
+const TaskCard: React.FC<TaskCardProps> = ({ task, onComplete, onViewDetail, disabled }) => {
   const config = typeConfig[task.type]
 
   const handleComplete = () => {
+    if (disabled) {
+      return
+    }
     if (task.status === 'pending' && onComplete) {
       onComplete(task.id)
       Taro.showToast({
@@ -33,6 +37,9 @@ const TaskCard: React.FC<TaskCardProps> = ({ task, onComplete, onViewDetail }) =
   }
 
   const handleClick = () => {
+    if (disabled) {
+      return
+    }
     if (onViewDetail) {
       onViewDetail(task.id)
     }
@@ -40,7 +47,7 @@ const TaskCard: React.FC<TaskCardProps> = ({ task, onComplete, onViewDetail }) =
 
   return (
     <View 
-      className={classnames(styles.card, task.status === 'completed' && styles.completed, task.status === 'locked' && styles.locked)}
+      className={classnames(styles.card, task.status === 'completed' && styles.completed, task.status === 'locked' && styles.locked, disabled && styles.disabled)}
       onClick={handleClick}
     >
       <View className={styles.header}>

@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
-import { UserInfo, ProjectItem, TaskItem, DailyRecord, RewardItem, UserReward, ActivityItem } from '@/types'
+import { UserInfo, ProjectItem, TaskItem, DailyRecord, RewardItem, UserReward, ActivityItem, RedeemRecord, ShareMealHistory } from '@/types'
 import { getProjectById } from '@/data/projects'
 import { generateDailyTasks } from '@/data/tasks'
 import { mockDailyRecords } from '@/data/moods'
@@ -25,6 +25,9 @@ interface AppState {
   currentDate: string
   joinedActivities: Record<string, number>
   redeemedRewards: Record<string, number>
+  redeemRecords: RedeemRecord[]
+  shareMealHistories: ShareMealHistory[]
+  dailyTaskHistory: Record<string, { tasks: TaskItem[], checkIn: boolean }>
   setUser: (user: UserInfo) => void
   selectProject: (projectId: string) => void
   completeTask: (taskId: string) => boolean
@@ -49,6 +52,11 @@ interface AppState {
     redeemedCount: number
   }
   joinActivity: (activityId: string) => boolean
+  addRedeemRecord: (record: RedeemRecord) => void
+  getRedeemRecords: () => RedeemRecord[]
+  addShareMealHistory: (history: ShareMealHistory) => void
+  getShareMealHistories: () => ShareMealHistory[]
+  getTaskHistoryByDate: (date: string) => { tasks: TaskItem[], checkIn: boolean } | null
 }
 
 export const useAppStore = create<AppState>()(
@@ -77,6 +85,18 @@ export const useAppStore = create<AppState>()(
       currentDate: getToday(),
       joinedActivities: { '1': 156, '2': 89, '3': 234, '4': 67 },
       redeemedRewards: { 'HF202601002': 1 },
+      redeemRecords: [
+        {
+          id: 'rr1',
+          code: 'HF202601002',
+          rewardName: '免费面部护理一次',
+          status: 'success',
+          redeemedAt: '2026-06-20 14:30',
+          operator: '门店店员A'
+        }
+      ],
+      shareMealHistories: [],
+      dailyTaskHistory: {},
 
       setUser: (user) => set({ user }),
 
@@ -340,13 +360,24 @@ export const useAppStore = create<AppState>()(
           
           console.log('[Store] 日期变更，重置任务:', state.currentDate, '→', today, '第', actualDay, '天')
           
-          set({
+          const historyDate = state.currentDate
+          const historyTasks = [...state.tasks]
+          const historyCheckIn = state.todayCheckIn
+          
+          set(state => ({
             currentDate: today,
             currentDay: actualDay,
-            tasks: generateDailyTasks(state.currentProject.id, actualDay),
+            tasks: generateDailyTasks(state.currentProject!.id, actualDay),
             completedTaskIds: [],
-            todayCheckIn: false
-          })
+            todayCheckIn: false,
+            dailyTaskHistory: {
+              ...state.dailyTaskHistory,
+              [historyDate]: {
+                tasks: historyTasks,
+                checkIn: historyCheckIn
+              }
+            }
+          }))
         }
       },
 
@@ -368,19 +399,66 @@ export const useAppStore = create<AppState>()(
         const upperCode = code.toUpperCase().trim()
         const userReward = state.userRewards.find(r => r.code === upperCode)
         
+        const now = dayjs().format('YYYY-MM-DD HH:mm')
+        
         if (!userReward) {
           console.log('[Store] 核销失败：券码不存在:', code)
+          const failRecord: RedeemRecord = {
+            id: `rr${Date.now()}`,
+            code: upperCode,
+            rewardName: '未知奖励',
+            status: 'failed',
+            failReason: '券码不存在',
+            redeemedAt: now,
+            operator: '门店店员'
+          }
+          set(state => ({
+            redeemRecords: [failRecord, ...state.redeemRecords]
+          }))
           return null
         }
         
         if (userReward.status === 'used') {
           console.log('[Store] 核销失败：券码已使用:', code)
+          const failRecord: RedeemRecord = {
+            id: `rr${Date.now()}`,
+            code: upperCode,
+            rewardName: userReward.reward.name,
+            status: 'failed',
+            failReason: '该券已使用',
+            redeemedAt: now,
+            operator: '门店店员'
+          }
+          set(state => ({
+            redeemRecords: [failRecord, ...state.redeemRecords]
+          }))
           return { ...userReward, status: 'used' as const }
         }
         
         if (userReward.status === 'expired') {
           console.log('[Store] 核销失败：券码已过期:', code)
+          const failRecord: RedeemRecord = {
+            id: `rr${Date.now()}`,
+            code: upperCode,
+            rewardName: userReward.reward.name,
+            status: 'failed',
+            failReason: '该券已过期',
+            redeemedAt: now,
+            operator: '门店店员'
+          }
+          set(state => ({
+            redeemRecords: [failRecord, ...state.redeemRecords]
+          }))
           return { ...userReward, status: 'expired' as const }
+        }
+        
+        const successRecord: RedeemRecord = {
+          id: `rr${Date.now()}`,
+          code: upperCode,
+          rewardName: userReward.reward.name,
+          status: 'success',
+          redeemedAt: now,
+          operator: '门店店员'
         }
         
         set(state => ({
@@ -390,7 +468,8 @@ export const useAppStore = create<AppState>()(
           redeemedRewards: {
             ...state.redeemedRewards,
             [upperCode]: (state.redeemedRewards[upperCode] || 0) + 1
-          }
+          },
+          redeemRecords: [successRecord, ...state.redeemRecords]
         }))
         
         console.log('[Store] 核销成功:', userReward.reward.name, '券码:', upperCode)
@@ -436,6 +515,39 @@ export const useAppStore = create<AppState>()(
         
         console.log('[Store] 参加活动:', activity.title)
         return true
+      },
+
+      addRedeemRecord: (record) => {
+        set(state => ({
+          redeemRecords: [record, ...state.redeemRecords]
+        }))
+        console.log('[Store] 添加核销记录:', record.code)
+      },
+
+      getRedeemRecords: () => {
+        return get().redeemRecords
+      },
+
+      addShareMealHistory: (history) => {
+        set(state => ({
+          shareMealHistories: [history, ...state.shareMealHistories]
+        }))
+        console.log('[Store] 添加分享餐单历史:', history.date)
+      },
+
+      getShareMealHistories: () => {
+        return get().shareMealHistories
+      },
+
+      getTaskHistoryByDate: (date) => {
+        const state = get()
+        if (date === getToday()) {
+          return {
+            tasks: state.tasks,
+            checkIn: state.todayCheckIn
+          }
+        }
+        return state.dailyTaskHistory[date] || null
       }
     }),
     {

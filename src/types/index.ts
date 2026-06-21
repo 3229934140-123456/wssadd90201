@@ -113,3 +113,23 @@ export interface BlindBoxQuestion {
   correctIndex: number
   explanation: string
 }
+
+export interface RedeemRecord {
+  id: string
+  code: string
+  rewardName: string
+  status: 'success' | 'failed'
+  failReason?: string
+  redeemedAt: string
+  operator?: string
+}
+
+export interface ShareMealHistory {
+  id: string
+  date: string
+  foods: string[]
+  day: number
+  checkInDays: number
+  imageUrl?: string
+  createdAt: string
+}
