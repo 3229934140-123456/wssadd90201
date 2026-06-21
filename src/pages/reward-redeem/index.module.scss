@@ -1,0 +1,348 @@
+@import '@/styles/variables.scss';
+
+.pageContainer {
+  min-height: 100vh;
+  background: #F5F5F5;
+}
+
+.content {
+  padding: $spacing-xl $spacing-4xl $spacing-6xl;
+}
+
+.header {
+  background: linear-gradient(135deg, $primary-color 0%, #FF9EBB 100%);
+  padding: $spacing-4xl;
+  color: #FFFFFF;
+
+  .title {
+    font-size: $font-size-xl;
+    font-weight: $font-weight-bold;
+    margin-bottom: $spacing-xs;
+  }
+
+  .subtitle {
+    font-size: $font-size-sm;
+    opacity: 0.9;
+  }
+}
+
+.inputSection {
+  background: #FFFFFF;
+  border-radius: $radius-xl;
+  padding: $spacing-xl;
+  margin-bottom: $spacing-xl;
+  box-shadow: $shadow-sm;
+}
+
+.sectionTitle {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-bold;
+  color: $text-color-primary;
+  margin-bottom: $spacing-lg;
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;
+}
+
+.inputWrapper {
+  display: flex;
+  gap: $spacing-md;
+  margin-bottom: $spacing-lg;
+}
+
+.codeInput {
+  flex: 1;
+  padding: $spacing-lg $spacing-xl;
+  border: 2rpx solid #E0E0E0;
+  border-radius: $radius-lg;
+  font-size: $font-size-lg;
+  color: $text-color-primary;
+  background: #FAFAFA;
+  text-align: center;
+  letter-spacing: 4rpx;
+  font-family: 'Courier New', monospace;
+
+  &:focus {
+    border-color: $primary-color;
+    background: #FFFFFF;
+  }
+}
+
+.actionRow {
+  display: flex;
+  gap: $spacing-md;
+}
+
+.btn {
+  flex: 1;
+  padding: $spacing-lg;
+  border-radius: $radius-lg;
+  text-align: center;
+  font-size: $font-size-base;
+  font-weight: $font-weight-medium;
+
+  &.primary {
+    background: linear-gradient(135deg, $primary-color 0%, #FF9EBB 100%);
+    color: #FFFFFF;
+  }
+
+  &.secondary {
+    background: #F5F5F5;
+    color: $text-color-secondary;
+  }
+
+  &.disabled {
+    opacity: 0.5;
+    pointer-events: none;
+  }
+
+  &:active {
+    transform: scale(0.98);
+  }
+}
+
+.rewardInfo {
+  background: #FFFFFF;
+  border-radius: $radius-xl;
+  padding: $spacing-xl;
+  box-shadow: $shadow-md;
+  margin-bottom: $spacing-xl;
+}
+
+.rewardNotFound {
+  text-align: center;
+  padding: $spacing-4xl;
+
+  .icon {
+    font-size: 80rpx;
+    margin-bottom: $spacing-lg;
+  }
+
+  .text {
+    font-size: $font-size-base;
+    color: $text-color-secondary;
+    line-height: 1.6;
+  }
+}
+
+.rewardDetail {
+  .rewardHeader {
+    display: flex;
+    align-items: center;
+    gap: $spacing-xl;
+    margin-bottom: $spacing-xl;
+    padding-bottom: $spacing-xl;
+    border-bottom: 1rpx solid #F0F0F0;
+  }
+
+  .rewardIcon {
+    width: 120rpx;
+    height: 120rpx;
+    border-radius: $radius-lg;
+    background: linear-gradient(135deg, #FFF5F8 0%, #FFE8EE 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 60rpx;
+  }
+
+  .rewardName {
+    font-size: $font-size-xl;
+    font-weight: $font-weight-bold;
+    color: $text-color-primary;
+    margin-bottom: $spacing-xs;
+  }
+
+  .statusBadge {
+    display: inline-block;
+    padding: $spacing-xs $spacing-lg;
+    border-radius: $radius-full;
+    font-size: $font-size-sm;
+    font-weight: $font-weight-medium;
+
+    &.unused {
+      background: #E6F7EE;
+      color: $food-green;
+    }
+
+    &.used {
+      background: #F5F5F5;
+      color: $text-color-secondary;
+    }
+
+    &.expired {
+      background: #FFEBEB;
+      color: $food-red;
+    }
+  }
+}
+
+.infoList {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-md;
+}
+
+.infoItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .label {
+    font-size: $font-size-base;
+    color: $text-color-secondary;
+  }
+
+  .value {
+    font-size: $font-size-base;
+    color: $text-color-primary;
+    font-weight: $font-weight-medium;
+  }
+
+  .code {
+    font-family: 'Courier New', monospace;
+    font-size: $font-size-lg;
+    color: $primary-color;
+    letter-spacing: 2rpx;
+  }
+}
+
+.redeemSection {
+  margin-top: $spacing-xl;
+  padding-top: $spacing-xl;
+  border-top: 1rpx solid #F0F0F0;
+}
+
+.redeemTip {
+  background: #FFF7E6;
+  border-radius: $radius-lg;
+  padding: $spacing-lg;
+  margin-bottom: $spacing-lg;
+  display: flex;
+  gap: $spacing-sm;
+  align-items: flex-start;
+
+  .icon {
+    font-size: $font-size-lg;
+    flex-shrink: 0;
+  }
+
+  .text {
+    font-size: $font-size-sm;
+    color: #B8860B;
+    line-height: 1.5;
+  }
+}
+
+.redeemBtn {
+  width: 100%;
+  padding: $spacing-xl;
+  background: linear-gradient(135deg, $primary-color 0%, #FF9EBB 100%);
+  color: #FFFFFF;
+  border-radius: $radius-xl;
+  text-align: center;
+  font-size: $font-size-lg;
+  font-weight: $font-weight-bold;
+  box-shadow: $shadow-glow-pink;
+
+  &.disabled {
+    background: #E0E0E0;
+    color: #999999;
+    box-shadow: none;
+    pointer-events: none;
+  }
+
+  &:active {
+    transform: scale(0.98);
+    opacity: 0.9;
+  }
+}
+
+.successOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.successContent {
+  width: 600rpx;
+  background: #FFFFFF;
+  border-radius: $radius-2xl;
+  padding: $spacing-4xl $spacing-xl;
+  text-align: center;
+}
+
+.successIcon {
+  font-size: 120rpx;
+  margin-bottom: $spacing-xl;
+}
+
+.successTitle {
+  font-size: $font-size-xl;
+  font-weight: $font-weight-bold;
+  color: $text-color-primary;
+  margin-bottom: $spacing-md;
+}
+
+.successReward {
+  font-size: $font-size-lg;
+  color: $primary-color;
+  font-weight: $font-weight-bold;
+  margin-bottom: $spacing-lg;
+}
+
+.successDesc {
+  font-size: $font-size-base;
+  color: $text-color-secondary;
+  margin-bottom: $spacing-3xl;
+  line-height: 1.6;
+}
+
+.successBtn {
+  width: 100%;
+  padding: $spacing-lg;
+  background: $primary-color;
+  color: #FFFFFF;
+  border-radius: $radius-xl;
+  font-size: $font-size-base;
+  font-weight: $font-weight-medium;
+}
+
+.quickCodes {
+  margin-top: $spacing-xl;
+  padding-top: $spacing-xl;
+  border-top: 1rpx dashed #E0E0E0;
+
+  .quickTitle {
+    font-size: $font-size-sm;
+    color: $text-color-secondary;
+    margin-bottom: $spacing-md;
+  }
+
+  .quickList {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $spacing-md;
+  }
+
+  .quickItem {
+    padding: $spacing-sm $spacing-lg;
+    background: #F5F5F5;
+    border-radius: $radius-md;
+    font-size: $font-size-sm;
+    color: $text-color-primary;
+    font-family: 'Courier New', monospace;
+
+    &:active {
+      background: #FFE8EE;
+      color: $primary-color;
+    }
+  }
+}

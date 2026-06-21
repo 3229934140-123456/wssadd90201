@@ -1,9 +1,10 @@
 import React, { useState, useMemo } from 'react'
-import { View, Text, ScrollView, RefreshControl, Image } from '@tarojs/components'
+import { View, Text, ScrollView, RefreshControl } from '@tarojs/components'
 import Taro, { useDidShow } from '@tarojs/taro'
 import { useAppStore } from '@/store/useAppStore'
-import { RewardItem, UserReward } from '@/types'
+import { RewardItem } from '@/types'
 import classnames from 'classnames'
+import dayjs from 'dayjs'
 import styles from './index.module.scss'
 
 type TabType = 'exchange' | 'my'
@@ -96,6 +97,10 @@ const RewardPage: React.FC = () => {
     return userRewards.filter(r => r.status === 'used')
   }, [userRewards])
 
+  const getDefaultExpiryDate = () => {
+    return dayjs().add(30, 'day').format('YYYY-MM-DD')
+  }
+
   useDidShow(() => {
     console.log('[RewardPage] 页面显示')
   })
@@ -114,10 +119,21 @@ const RewardPage: React.FC = () => {
     >
       <View className={styles.energyHeader}>
         <View className={styles.energyInfo}>
-          <Text className={styles.energyTitle}>我的恢复能量</Text>
-          <View className={styles.energyValue}>
-            {user.energy}
-            <Text>能量</Text>
+          <View className={styles.energyRow}>
+            <View style={{ flex: 1 }}>
+              <Text className={styles.energyTitle}>我的恢复能量</Text>
+              <View className={styles.energyValue}>
+                {user.energy}
+                <Text>能量</Text>
+              </View>
+            </View>
+            <View 
+              className={styles.redeemEntryBtn}
+              onClick={() => Taro.navigateTo({ url: '/pages/reward-redeem/index' })}
+            >
+              <Text className={styles.redeemEntryIcon}>🎫</Text>
+              <Text className={styles.redeemEntryText}>门店核销</Text>
+            </View>
           </View>
           <Text className={styles.energyTips}>
             💡 完成任务、盲盒答题可获得更多能量
@@ -195,15 +211,24 @@ const RewardPage: React.FC = () => {
                         {getRewardIcon(reward.reward.type)}
                       </View>
                       <View className={styles.userRewardContent}>
-                        <View>
-                          <Text className={styles.userRewardName}>{reward.reward.name}</Text>
+                        <View style={{ flex: 1 }}>
+                          <View className={styles.rewardHeader}>
+                            <Text className={styles.userRewardName}>{reward.reward.name}</Text>
+                            <View className={classnames(styles.statusTag, styles.statusUnused)}>
+                              待使用
+                            </View>
+                          </View>
                           <View className={styles.userRewardCode}>券码: {reward.code}</View>
                           <Text className={styles.userRewardDate}>
                             获得时间: {reward.obtainedAt}
                           </Text>
-                          {reward.reward.expiryDate && (
+                          {reward.reward.expiryDate ? (
                             <Text className={styles.userRewardDate}>
                               有效期至: {reward.reward.expiryDate}
+                            </Text>
+                          ) : (
+                            <Text className={styles.userRewardDate}>
+                              有效期至: {getDefaultExpiryDate()}
                             </Text>
                           )}
                         </View>
@@ -235,11 +260,27 @@ const RewardPage: React.FC = () => {
                         {getRewardIcon(reward.reward.type)}
                       </View>
                       <View className={styles.userRewardContent}>
-                        <Text className={styles.userRewardName}>{reward.reward.name}</Text>
-                        <View className={styles.userRewardCode}>券码: {reward.code}</View>
-                        <Text className={styles.userRewardDate}>
-                          获得时间: {reward.obtainedAt}
-                        </Text>
+                        <View style={{ flex: 1 }}>
+                          <View className={styles.rewardHeader}>
+                            <Text className={styles.userRewardName}>{reward.reward.name}</Text>
+                            <View className={classnames(styles.statusTag, styles.statusUsed)}>
+                              已使用
+                            </View>
+                          </View>
+                          <View className={styles.userRewardCode}>券码: {reward.code}</View>
+                          <Text className={styles.userRewardDate}>
+                            获得时间: {reward.obtainedAt}
+                          </Text>
+                          {reward.reward.expiryDate ? (
+                            <Text className={styles.userRewardDate}>
+                              有效期至: {reward.reward.expiryDate}
+                            </Text>
+                          ) : (
+                            <Text className={styles.userRewardDate}>
+                              有效期至: {getDefaultExpiryDate()}
+                            </Text>
+                          )}
+                        </View>
                       </View>
                     </View>
                   ))}

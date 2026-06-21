@@ -11,7 +11,8 @@ export default defineAppConfig({
     'pages/task-detail/index',
     'pages/share/index',
     'pages/comfort/index',
-    'pages/activity-manage/index'
+    'pages/activity-manage/index',
+    'pages/reward-redeem/index'
   ],
   window: {
     backgroundTextStyle: 'light',

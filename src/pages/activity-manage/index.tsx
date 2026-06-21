@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useMemo } from 'react'
 import { View, Text, ScrollView, RefreshControl, Input, Textarea } from '@tarojs/components'
 import Taro, { useDidShow } from '@tarojs/taro'
 import { useAppStore } from '@/store/useAppStore'
@@ -12,7 +12,19 @@ const ActivityManagePage: React.FC = () => {
   const [editingActivity, setEditingActivity] = useState<ActivityItem | null>(null)
   const [editRules, setEditRules] = useState<string[]>([])
   const [editRewards, setEditRewards] = useState<ActivityReward[]>([])
-  const { activities, updateActivity } = useAppStore()
+  const { activities, updateActivity, getActivityStats, joinedActivities, rewards, redeemedRewards } = useAppStore()
+
+  const totalJoined = useMemo(() => {
+    return Object.values(joinedActivities).reduce((sum, count) => sum + count, 0)
+  }, [joinedActivities])
+
+  const totalRewards = useMemo(() => {
+    return rewards.reduce((sum, r) => sum + r.stock, 0)
+  }, [rewards])
+
+  const totalRedeemed = useMemo(() => {
+    return Object.values(redeemedRewards).reduce((sum, count) => sum + count, 0)
+  }, [redeemedRewards])
 
   const handleRefresh = () => {
     setRefreshing(true)
@@ -142,11 +154,43 @@ const ActivityManagePage: React.FC = () => {
       }
     >
       <View className={styles.adminHeader}>
-        <Text className={styles.title}>⚙️ 门店管理后台</Text>
-        <Text className={styles.subtitle}>管理活动规则、奖励库存</Text>
+        <View className={styles.headerRow}>
+          <View>
+            <Text className={styles.title}>⚙️ 门店管理后台</Text>
+            <Text className={styles.subtitle}>管理活动规则、奖励库存</Text>
+          </View>
+          <View 
+            className={styles.redeemBtn}
+            onClick={() => Taro.navigateTo({ url: '/pages/reward-redeem/index' })}
+          >
+            <Text className={styles.redeemBtnIcon}>🎫</Text>
+            <Text className={styles.redeemBtnText}>核销</Text>
+          </View>
+        </View>
       </View>
 
       <View className={styles.content}>
+        <View className={styles.dashboardSection}>
+          <View className={styles.sectionTitle}>
+            <Text>📊</Text>
+            <Text>数据看板</Text>
+          </View>
+          <View className={styles.dashboardStats}>
+            <View className={styles.dashboardStat}>
+              <Text className={styles.dashboardStatValue}>{totalJoined}</Text>
+              <Text className={styles.dashboardStatLabel}>总报名人数</Text>
+            </View>
+            <View className={styles.dashboardStat}>
+              <Text className={styles.dashboardStatValue}>{totalRewards}</Text>
+              <Text className={styles.dashboardStatLabel}>总奖励库存</Text>
+            </View>
+            <View className={styles.dashboardStat}>
+              <Text className={styles.dashboardStatValue}>{totalRedeemed}</Text>
+              <Text className={styles.dashboardStatLabel}>已核销</Text>
+            </View>
+          </View>
+        </View>
+
         <View className={styles.sectionTitle}>
           <Text>📋</Text>
           <Text>活动列表</Text>
@@ -178,6 +222,27 @@ const ActivityManagePage: React.FC = () => {
                   <View className={styles.metaItem}>
                     <Text>🎁</Text>
                     <Text>{activity.rewards.length}种奖励</Text>
+                  </View>
+                </View>
+
+                <View className={styles.activityStats}>
+                  <View className={styles.activityStatItem}>
+                    <Text className={styles.activityStatLabel}>报名人数</Text>
+                    <Text className={styles.activityStatValue}>
+                      {getActivityStats(activity.id).joinedCount}
+                    </Text>
+                  </View>
+                  <View className={styles.activityStatItem}>
+                    <Text className={styles.activityStatLabel}>剩余奖励</Text>
+                    <Text className={styles.activityStatValue}>
+                      {getActivityStats(activity.id).remainingRewards}
+                    </Text>
+                  </View>
+                  <View className={styles.activityStatItem}>
+                    <Text className={styles.activityStatLabel}>已核销</Text>
+                    <Text className={styles.activityStatValue}>
+                      {getActivityStats(activity.id).redeemedCount}
+                    </Text>
                   </View>
                 </View>
 

@@ -10,7 +10,7 @@ import styles from './index.module.scss'
 
 const HomePage: React.FC = () => {
   const [refreshing, setRefreshing] = useState(false)
-  const { tasks, currentProject, completeTask, addEnergy, user } = useAppStore()
+  const { tasks, currentProject, completeTask, addEnergy, user, todayCheckIn, lastCheckInDate, checkAndResetDailyTasks } = useAppStore()
 
   const todayTasks = useMemo(() => {
     return tasks.filter(t => t.status !== 'locked').slice(0, 4)
@@ -20,18 +20,29 @@ const HomePage: React.FC = () => {
     const days = []
     const weekdays = ['日', '一', '二', '三', '四', '五', '六']
     const today = new Date()
+    const todayStr = getToday()
+    
     for (let i = -3; i <= 3; i++) {
       const date = new Date(today)
       date.setDate(today.getDate() + i)
+      const dateStr = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`
+      
+      let completed = false
+      if (i < 0) {
+        completed = dateStr <= lastCheckInDate && user.checkInDays > 0
+      } else if (i === 0) {
+        completed = todayCheckIn
+      }
+      
       days.push({
         day: weekdays[date.getDay()],
         date: date.getDate(),
         isToday: i === 0,
-        completed: i < 0 || (i === 0 && todayTasks.filter(t => t.status === 'completed').length >= 2)
+        completed
       })
     }
     return days
-  }, [todayTasks])
+  }, [todayTasks, todayCheckIn, lastCheckInDate, user.checkInDays])
 
   const handleRefresh = () => {
     setRefreshing(true)
@@ -54,6 +65,10 @@ const HomePage: React.FC = () => {
     addEnergy(energy)
     console.log('[HomePage] 盲盒完成:', isCorrect, '获得能量:', energy)
   }
+
+  useDidShow(() => {
+    checkAndResetDailyTasks()
+  })
 
   const handleGoToActivity = () => {
     Taro.navigateTo({ url: '/pages/activity/index' })

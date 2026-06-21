@@ -9,11 +9,15 @@ function App(props) {
 
   useEffect(() => {
     console.log('[App] 应用启动');
+    const { checkAndResetDailyTasks } = useAppStore.getState();
+    checkAndResetDailyTasks();
     checkProjectSelection();
   }, []);
 
   useDidShow(() => {
     console.log('[App] 应用显示');
+    const { checkAndResetDailyTasks } = useAppStore.getState();
+    checkAndResetDailyTasks();
     checkProjectSelection();
   });
 

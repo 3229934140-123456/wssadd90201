@@ -100,6 +100,10 @@ const SharePage: React.FC = () => {
   }
 
   const handleSaveImage = () => {
+    if (selectedFoods.length === 0) {
+      Taro.showToast({ title: '请先选择今日合规餐单食物后，才能生成和保存或分享哦~', icon: 'none', duration: 2000 })
+      return
+    }
     if (!shareImageUrl) {
       Taro.showToast({ title: '请先生成分享图', icon: 'none' })
       return
@@ -161,6 +165,14 @@ const SharePage: React.FC = () => {
   }
 
   const handleShareToFriend = () => {
+    if (selectedFoods.length === 0) {
+      Taro.showToast({ title: '请先选择今日合规餐单食物后，才能生成和保存或分享哦~', icon: 'none', duration: 2000 })
+      return
+    }
+    if (!shareImageUrl) {
+      Taro.showToast({ title: '请先生成分享图', icon: 'none' })
+      return
+    }
     Taro.showShareMenu({
       withShareTicket: true,
       menus: ['shareAppMessage', 'shareTimeline'],

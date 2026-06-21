@@ -354,3 +354,98 @@
     text-align: center;
   }
 }
+
+.headerRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  position: relative;
+  z-index: 1;
+}
+
+.redeemBtn {
+  background: rgba(255, 255, 255, 0.2);
+  border: 2rpx solid rgba(255, 255, 255, 0.4);
+  border-radius: $radius-lg;
+  padding: $spacing-md $spacing-xl;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: $spacing-xs;
+
+  &:active {
+    background: rgba(255, 255, 255, 0.3);
+    transform: scale(0.95);
+  }
+}
+
+.redeemBtnIcon {
+  font-size: 40rpx;
+}
+
+.redeemBtnText {
+  font-size: $font-size-xs;
+  color: #FFFFFF;
+  font-weight: $font-weight-medium;
+}
+
+.dashboardSection {
+  margin-bottom: $spacing-2xl;
+}
+
+.dashboardStats {
+  display: flex;
+  gap: $spacing-md;
+  margin-top: $spacing-lg;
+}
+
+.dashboardStat {
+  flex: 1;
+  background: linear-gradient(135deg, #FFF5F7 0%, #FFEBF0 100%);
+  border-radius: $radius-xl;
+  padding: $spacing-xl $spacing-md;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: $spacing-sm;
+  border: 2rpx solid rgba(255, 122, 158, 0.1);
+}
+
+.dashboardStatValue {
+  font-size: $font-size-2xl;
+  font-weight: $font-weight-bold;
+  color: $primary-color;
+}
+
+.dashboardStatLabel {
+  font-size: $font-size-xs;
+  color: $text-color-secondary;
+}
+
+.activityStats {
+  display: flex;
+  gap: $spacing-md;
+  margin: $spacing-md 0;
+  padding: $spacing-md;
+  background: #FFF5F7;
+  border-radius: $radius-lg;
+}
+
+.activityStatItem {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: $spacing-xs;
+}
+
+.activityStatLabel {
+  font-size: $font-size-xs;
+  color: $text-color-secondary;
+}
+
+.activityStatValue {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-bold;
+  color: $primary-color;
+}

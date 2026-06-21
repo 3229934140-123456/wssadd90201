@@ -1,12 +1,13 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
-import { UserInfo, ProjectItem, TaskItem, DailyRecord, FoodItem, RewardItem, UserReward, ActivityItem } from '@/types'
+import { UserInfo, ProjectItem, TaskItem, DailyRecord, RewardItem, UserReward, ActivityItem } from '@/types'
 import { getProjectById } from '@/data/projects'
 import { generateDailyTasks } from '@/data/tasks'
 import { mockDailyRecords } from '@/data/moods'
 import { userRewards, rewards as initialRewards } from '@/data/rewards'
 import { activities as initialActivities } from '@/data/activities'
 import { getToday } from '@/utils/date'
+import dayjs from 'dayjs'
 
 interface AppState {
   user: UserInfo
@@ -21,6 +22,9 @@ interface AppState {
   activities: ActivityItem[]
   todayCheckIn: boolean
   lastCheckInDate: string
+  currentDate: string
+  joinedActivities: Record<string, number>
+  redeemedRewards: Record<string, number>
   setUser: (user: UserInfo) => void
   selectProject: (projectId: string) => void
   completeTask: (taskId: string) => boolean
@@ -29,12 +33,22 @@ interface AppState {
   addDailyRecord: (record: DailyRecord) => void
   toggleFavorite: (foodId: string) => void
   addUserReward: (reward: UserReward) => void
-  useReward: (rewardId: string) => void
+  useReward: (rewardId: string) => boolean
   exchangeReward: (rewardId: string) => UserReward | null
   decrementRewardStock: (rewardId: string) => boolean
   updateActivity: (activity: ActivityItem) => void
   checkAndDoDailyCheckIn: () => boolean
   resetCheckIn: () => void
+  checkAndResetDailyTasks: () => void
+  verifyRewardCode: (code: string) => UserReward | null
+  redeemRewardByCode: (code: string) => UserReward | null
+  getActivityStats: (activityId: string) => {
+    joinedCount: number
+    totalRewards: number
+    remainingRewards: number
+    redeemedCount: number
+  }
+  joinActivity: (activityId: string) => boolean
 }
 
 export const useAppStore = create<AppState>()(
@@ -60,6 +74,9 @@ export const useAppStore = create<AppState>()(
       activities: initialActivities,
       todayCheckIn: false,
       lastCheckInDate: '',
+      currentDate: getToday(),
+      joinedActivities: { '1': 156, '2': 89, '3': 234, '4': 67 },
+      redeemedRewards: { 'HF202601002': 1 },
 
       setUser: (user) => set({ user }),
 
@@ -180,7 +197,6 @@ export const useAppStore = create<AppState>()(
       },
 
       addDailyRecord: (record) => {
-        const state = get()
         const energyBonus = 50
         set(state => ({
           dailyRecords: [record, ...state.dailyRecords],
@@ -214,7 +230,11 @@ export const useAppStore = create<AppState>()(
         const newUserReward: UserReward = {
           id: `ur${Date.now()}`,
           rewardId: reward.id,
-          reward: { ...reward, stock: reward.stock - 1 },
+          reward: { 
+            ...reward, 
+            stock: reward.stock - 1,
+            expiryDate: reward.expiryDate || dayjs().add(30, 'day').format('YYYY-MM-DD')
+          },
           code: `HF${Date.now().toString().slice(-8).toUpperCase()}`,
           status: 'unused',
           obtainedAt: getToday()
@@ -281,11 +301,22 @@ export const useAppStore = create<AppState>()(
       },
 
       useReward: (rewardId) => {
+        const state = get()
+        const reward = state.userRewards.find(r => r.id === rewardId)
+        if (!reward || reward.status !== 'unused') {
+          return false
+        }
         set(state => ({
           userRewards: state.userRewards.map(r =>
             r.id === rewardId ? { ...r, status: 'used' as const } : r
-          )
+          ),
+          redeemedRewards: {
+            ...state.redeemedRewards,
+            [reward.code]: (state.redeemedRewards[reward.code] || 0) + 1
+          }
         }))
+        console.log('[Store] 使用奖励:', reward.reward.name)
+        return true
       },
 
       resetCheckIn: () => {
@@ -296,6 +327,115 @@ export const useAppStore = create<AppState>()(
             completedTaskIds: []
           })
         }
+      },
+
+      checkAndResetDailyTasks: () => {
+        const state = get()
+        const today = getToday()
+        
+        if (state.currentDate !== today && state.currentProject) {
+          const newDay = state.currentDay + 1
+          const maxDay = state.currentProject.recoveryDays
+          const actualDay = Math.min(newDay, maxDay)
+          
+          console.log('[Store] 日期变更，重置任务:', state.currentDate, '→', today, '第', actualDay, '天')
+          
+          set({
+            currentDate: today,
+            currentDay: actualDay,
+            tasks: generateDailyTasks(state.currentProject.id, actualDay),
+            completedTaskIds: [],
+            todayCheckIn: false
+          })
+        }
+      },
+
+      verifyRewardCode: (code) => {
+        const state = get()
+        const upperCode = code.toUpperCase().trim()
+        const userReward = state.userRewards.find(r => r.code === upperCode)
+        
+        if (!userReward) {
+          console.log('[Store] 券码不存在:', code)
+          return null
+        }
+        
+        return userReward
+      },
+
+      redeemRewardByCode: (code) => {
+        const state = get()
+        const upperCode = code.toUpperCase().trim()
+        const userReward = state.userRewards.find(r => r.code === upperCode)
+        
+        if (!userReward) {
+          console.log('[Store] 核销失败：券码不存在:', code)
+          return null
+        }
+        
+        if (userReward.status === 'used') {
+          console.log('[Store] 核销失败：券码已使用:', code)
+          return { ...userReward, status: 'used' as const }
+        }
+        
+        if (userReward.status === 'expired') {
+          console.log('[Store] 核销失败：券码已过期:', code)
+          return { ...userReward, status: 'expired' as const }
+        }
+        
+        set(state => ({
+          userRewards: state.userRewards.map(r =>
+            r.id === userReward.id ? { ...r, status: 'used' as const } : r
+          ),
+          redeemedRewards: {
+            ...state.redeemedRewards,
+            [upperCode]: (state.redeemedRewards[upperCode] || 0) + 1
+          }
+        }))
+        
+        console.log('[Store] 核销成功:', userReward.reward.name, '券码:', upperCode)
+        return { ...userReward, status: 'used' as const }
+      },
+
+      getActivityStats: (activityId) => {
+        const state = get()
+        const activity = state.activities.find(a => a.id === activityId)
+        
+        if (!activity) {
+          return { joinedCount: 0, totalRewards: 0, remainingRewards: 0, redeemedCount: 0 }
+        }
+        
+        const totalRewards = activity.rewards.reduce((sum, r) => sum + r.stock, 0)
+        const remainingRewards = activity.rewards.reduce((sum, r) => {
+          const storeReward = state.rewards.find(sr => sr.id === r.id)
+          return sum + (storeReward ? storeReward.stock : r.stock)
+        }, 0)
+        
+        const redeemedCount = Object.values(state.redeemedRewards).reduce((sum, count) => sum + count, 0)
+        
+        return {
+          joinedCount: state.joinedActivities[activityId] || 0,
+          totalRewards,
+          remainingRewards,
+          redeemedCount
+        }
+      },
+
+      joinActivity: (activityId) => {
+        const state = get()
+        const activity = state.activities.find(a => a.id === activityId)
+        
+        if (!activity) return false
+        
+        set(state => ({
+          joinedActivities: {
+            ...state.joinedActivities,
+            [activityId]: (state.joinedActivities[activityId] || 0) + 1
+          }
+        }))
+        
+        console.log('[Store] 参加活动:', activity.title)
+        return true
       }
     }),
     {
