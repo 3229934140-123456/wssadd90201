@@ -2,7 +2,7 @@ import React, { useState, useMemo } from 'react'
 import { View, Text, ScrollView, Input } from '@tarojs/components'
 import Taro, { useDidShow } from '@tarojs/taro'
 import { useAppStore } from '@/store/useAppStore'
-import { UserReward } from '@/types'
+import { UserReward, RedeemRecord } from '@/types'
 import classnames from 'classnames'
 import styles from './index.module.scss'
 
@@ -12,7 +12,11 @@ const RewardRedeemPage: React.FC = () => {
   const [showSuccess, setShowSuccess] = useState(false)
   const [redeemedReward, setRedeemedReward] = useState<UserReward | null>(null)
   const [notFound, setNotFound] = useState(false)
-  const { userRewards, verifyRewardCode, redeemRewardByCode } = useAppStore()
+  const { userRewards, verifyRewardCode, redeemRewardByCode, redeemRecords } = useAppStore()
+
+  const recentRedeemRecords = useMemo(() => {
+    return redeemRecords.slice(0, 10)
+  }, [redeemRecords])
 
   const quickCodes = useMemo(() => {
     return userRewards
@@ -66,6 +70,39 @@ const RewardRedeemPage: React.FC = () => {
   }
 
   const handleRedeem = () => {
+    const result = redeemRewardByCode(code)
+    if (!result) {
+      Taro.showToast({ title: '核销失败：券码不存在', icon: 'none' })
+      setVerifiedReward(null)
+      setNotFound(true)
+      return
+    }
+
+    if (result.status === 'used') {
+      const wasUnused = verifiedReward?.status === 'unused'
+      if (wasUnused) {
+        setRedeemedReward(result)
+        setShowSuccess(true)
+        setVerifiedReward(null)
+        setCode('')
+        console.log('[RewardRedeemPage] 核销成功:', result.reward.name)
+      } else {
+        Taro.showToast({ title: '该券码已使用', icon: 'none' })
+        setVerifiedReward({ ...verifiedReward!, status: 'used' })
+      }
+      return
+    }
+
+    if (result.status === 'expired') {
+      Taro.showToast({ title: '该券码已过期', icon: 'none' })
+      setVerifiedReward({ ...verifiedReward!, status: 'expired' })
+      return
+    }
+
+    Taro.showToast({ title: '核销失败，请重试', icon: 'none' })
+  }
+
+  const handleVerifyAndRedeem = () => {
     if (!verifiedReward) return
 
     Taro.showModal({
@@ -74,21 +111,7 @@ const RewardRedeemPage: React.FC = () => {
       confirmColor: '#FF7A9E',
       success: (res) => {
         if (res.confirm) {
-          const result = redeemRewardByCode(code)
-          if (result && result.status === 'used') {
-            setRedeemedReward(result)
-            setShowSuccess(true)
-            setVerifiedReward(null)
-            console.log('[RewardRedeemPage] 核销成功:', result.reward.name)
-          } else if (result && result.status === 'used') {
-            Taro.showToast({ title: '该券码已使用', icon: 'none' })
-            setVerifiedReward({ ...verifiedReward, status: 'used' })
-          } else if (result && result.status === 'expired') {
-            Taro.showToast({ title: '该券码已过期', icon: 'none' })
-            setVerifiedReward({ ...verifiedReward, status: 'expired' })
-          } else {
-            Taro.showToast({ title: '核销失败，请重试', icon: 'none' })
-          }
+          handleRedeem()
         }
       }
     })
@@ -107,6 +130,11 @@ const RewardRedeemPage: React.FC = () => {
       case 'expired': return '已过期'
       default: return status
     }
+  }
+
+  const getRecordStatusText = (record: RedeemRecord) => {
+    if (record.status === 'success') return '成功'
+    return `失败（${record.failReason || '未知原因'}）`
   }
 
   const getRewardIcon = (type: string) => {
@@ -198,6 +226,25 @@ const RewardRedeemPage: React.FC = () => {
                 请检查券码是否正确
               </Text>
             </View>
+            <View className={styles.redeemSection}>
+              <View className={styles.redeemTip}>
+                <Text className={styles.icon}>⚠️</Text>
+                <Text className={styles.text}>
+                  如需记录本次核销尝试（将作为失败流水保存），请点击下方按钮。
+                </Text>
+              </View>
+              <View
+                className={styles.redeemBtn}
+                onClick={() => {
+                  redeemRewardByCode(code)
+                  Taro.showToast({ title: '已记录核销失败流水', icon: 'none' })
+                  setNotFound(false)
+                  setCode('')
+                }}
+              >
+                🔄 记录核销尝试
+              </View>
+            </View>
           </View>
         )}
 
@@ -250,7 +297,7 @@ const RewardRedeemPage: React.FC = () => {
                   <View className={styles.redeemTip}>
                     <Text className={styles.icon}>⚠️</Text>
                     <Text className={styles.text}>
-                      该券码已于 {getToday()} 核销使用，请勿重复操作。
+                      该券码已核销使用，再次核销将记录为失败流水。
                     </Text>
                   </View>
                 )}
@@ -259,30 +306,26 @@ const RewardRedeemPage: React.FC = () => {
                   <View className={styles.redeemTip}>
                     <Text className={styles.icon}>⏰</Text>
                     <Text className={styles.text}>
-                      该券码已超过有效期，无法核销使用。
+                      该券码已超过有效期，核销将记录为失败流水。
                     </Text>
                   </View>
                 )}
 
                 {verifiedReward.status === 'unused' && (
-                  <>
-                    <View className={styles.redeemTip}>
-                      <Text className={styles.icon}>⚠️</Text>
-                      <Text className={styles.text}>
-                        请确认顾客身份和奖励信息无误后，再进行核销操作。核销后该券码将立即失效。
-                      </Text>
-                    </View>
-                    <View
-                      className={classnames(
-                        styles.redeemBtn,
-                        verifiedReward.status !== 'unused' && styles.disabled
-                      )}
-                      onClick={handleRedeem}
-                    >
-                      ✅ 确认核销
-                    </View>
-                  </>
+                  <View className={styles.redeemTip}>
+                    <Text className={styles.icon}>⚠️</Text>
+                    <Text className={styles.text}>
+                      请确认顾客身份和奖励信息无误后，再进行核销操作。核销后该券码将立即失效。
+                    </Text>
+                  </View>
                 )}
+
+                <View
+                  className={styles.redeemBtn}
+                  onClick={handleVerifyAndRedeem}
+                >
+                  {verifiedReward.status === 'unused' ? '✅ 确认核销' : '🔄 尝试核销（将记录流水）'}
+                </View>
               </View>
             </View>
           </View>
@@ -299,6 +342,39 @@ const RewardRedeemPage: React.FC = () => {
             </View>
           </View>
         )}
+
+        <View className={styles.recordsSection}>
+          <View className={styles.sectionTitle}>
+            <Text>📋</Text>
+            <Text>最近核销流水</Text>
+          </View>
+
+          {recentRedeemRecords.length > 0 ? (
+            <View className={styles.recordsList}>
+              {recentRedeemRecords.map(record => (
+                <View key={record.id} className={styles.recordItem}>
+                  <View className={styles.recordMain}>
+                    <View className={styles.recordHeader}>
+                      <Text className={styles.recordCode}>{record.code}</Text>
+                      <View className={classnames(
+                        styles.recordStatus,
+                        record.status === 'success' ? styles.statusSuccess : styles.statusFailed
+                      )}>
+                        {getRecordStatusText(record)}
+                      </View>
+                    </View>
+                    <Text className={styles.recordReward}>{record.rewardName}</Text>
+                    <Text className={styles.recordTime}>{record.redeemedAt}</Text>
+                  </View>
+                </View>
+              ))}
+            </View>
+          ) : (
+            <View className={styles.emptyRecords}>
+              <Text className={styles.emptyRecordsText}>暂无核销记录</Text>
+            </View>
+          )}
+        </View>
       </View>
 
       {showSuccess && redeemedReward && (
@@ -319,11 +395,6 @@ const RewardRedeemPage: React.FC = () => {
       )}
     </ScrollView>
   )
-}
-
-const getToday = () => {
-  const now = new Date()
-  return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`
 }
 
 export default RewardRedeemPage

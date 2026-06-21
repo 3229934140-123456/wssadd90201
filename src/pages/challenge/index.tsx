@@ -30,10 +30,13 @@ const ChallengePage: React.FC = () => {
   const isToday = selectedDate === getToday()
 
   const displayTasks = useMemo(() => {
-    if (isToday || !selectedDayData) {
+    if (isToday) {
       return currentDayTasks
     }
-    return selectedDayData.tasks.filter(t => t.status !== 'locked')
+    if (selectedDayData) {
+      return selectedDayData.tasks.filter(t => t.status !== 'locked')
+    }
+    return []
   }, [isToday, selectedDayData, currentDayTasks])
 
   const displayCompleted = useMemo(() => {
@@ -48,7 +51,10 @@ const ChallengePage: React.FC = () => {
     if (isToday) {
       return todayCheckIn
     }
-    return selectedDayData?.checkIn || false
+    if (selectedDayData) {
+      return selectedDayData.checkIn
+    }
+    return false
   }, [isToday, todayCheckIn, selectedDayData])
 
   const filteredTasks = useMemo(() => {

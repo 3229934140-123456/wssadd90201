@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { View, Text, ScrollView, RefreshControl, Image } from '@tarojs/components'
+import { View, Text, ScrollView } from '@tarojs/components'
 import Taro, { useDidShow } from '@tarojs/taro'
 import { useAppStore } from '@/store/useAppStore'
 import { ActivityItem } from '@/types'
@@ -7,26 +7,27 @@ import classnames from 'classnames'
 import styles from './index.module.scss'
 
 const ActivityPage: React.FC = () => {
-  const [refreshing, setRefreshing] = useState(false)
   const [expandedId, setExpandedId] = useState<string | null>(null)
-  const [joinedActivities, setJoinedActivities] = useState<string[]>(['1'])
-  const { activities } = useAppStore()
-
-  const handleRefresh = () => {
-    setRefreshing(true)
-    console.log('[ActivityPage] 下拉刷新')
-    setTimeout(() => {
-      setRefreshing(false)
-      Taro.showToast({ title: '刷新成功', icon: 'none' })
-    }, 1000)
-  }
+  const { activities, userJoinedActivities, joinedActivities, joinActivity } = useAppStore()
 
   const handleToggleExpand = (activityId: string) => {
     setExpandedId(expandedId === activityId ? null : activityId)
   }
 
-  const handleJoinActivity = (activity: ActivityItem) => {
-    if (joinedActivities.includes(activity.id)) {
+  const handleJoinActivity = async (activity: ActivityItem) => {
+    const result = joinActivity(activity.id)
+    if (result.duplicated) {
+      Taro.showToast({ title: '您已参加该活动', icon: 'none' })
+      return
+    }
+    if (result.success) {
+      Taro.showToast({ title: '参加成功！', icon: 'success' })
+      console.log('[ActivityPage] 参加活动:', activity.title)
+    }
+  }
+
+  const handleJoinActivityWithConfirm = (activity: ActivityItem) => {
+    if (userJoinedActivities.includes(activity.id)) {
       Taro.showToast({ title: '您已参加该活动', icon: 'none' })
       return
     }
@@ -37,9 +38,7 @@ const ActivityPage: React.FC = () => {
       confirmColor: '#FF7A9E',
       success: (res) => {
         if (res.confirm) {
-          setJoinedActivities([...joinedActivities, activity.id])
-          Taro.showToast({ title: '参加成功！', icon: 'success' })
-          console.log('[ActivityPage] 参加活动:', activity.title)
+          handleJoinActivity(activity)
         }
       }
     })
@@ -84,13 +83,6 @@ const ActivityPage: React.FC = () => {
     <ScrollView
       className={styles.pageContainer}
       scrollY
-      refreshControl={
-        <RefreshControl
-          refreshing={refreshing}
-          onRefresh={handleRefresh}
-          color="#FF7A9E"
-        />
-      }
     >
       <View className={styles.pageHeader}>
         <View className={styles.headerRow}>
@@ -114,7 +106,8 @@ const ActivityPage: React.FC = () => {
             {activities.map(activity => {
               const status = getActivityStatus(activity)
               const isExpanded = expandedId === activity.id
-              const isJoined = joinedActivities.includes(activity.id)
+              const isJoined = userJoinedActivities.includes(activity.id)
+              const joinedCount = joinedActivities[activity.id] || 0
 
               return (
                 <View
@@ -146,7 +139,7 @@ const ActivityPage: React.FC = () => {
                       <View className={styles.activityStats}>
                         <View className={styles.statItem}>
                           <Text>👥</Text>
-                          <Text>{Math.floor(Math.random() * 500) + 100}人参与</Text>
+                          <Text>{joinedCount}人参与</Text>
                         </View>
                         <View className={styles.statItem}>
                           <Text>⏰</Text>
@@ -201,7 +194,7 @@ const ActivityPage: React.FC = () => {
 
                       <View
                         className={styles.joinBtn}
-                        onClick={() => handleJoinActivity(activity)}
+                        onClick={() => handleJoinActivityWithConfirm(activity)}
                       >
                         {isJoined ? '✅ 已参加活动' : '🎉 立即参加'}
                       </View>

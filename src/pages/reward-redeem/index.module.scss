@@ -346,3 +346,87 @@
     }
   }
 }
+
+.recordsSection {
+  background: #FFFFFF;
+  border-radius: $radius-xl;
+  padding: $spacing-xl;
+  box-shadow: $shadow-md;
+  margin-bottom: $spacing-xl;
+}
+
+.recordsList {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-md;
+}
+
+.recordItem {
+  padding: $spacing-lg;
+  background: #FAFAFA;
+  border-radius: $radius-lg;
+  border-left: 6rpx solid #E0E0E0;
+
+  &:active {
+    background: #F5F5F5;
+  }
+}
+
+.recordMain {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-xs;
+}
+
+.recordHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: $spacing-xs;
+}
+
+.recordCode {
+  font-size: $font-size-base;
+  font-weight: $font-weight-bold;
+  color: $primary-color;
+  font-family: 'Courier New', monospace;
+  letter-spacing: 1rpx;
+}
+
+.recordStatus {
+  padding: $spacing-xs $spacing-md;
+  border-radius: $radius-full;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-medium;
+
+  &.statusSuccess {
+    background: #E6F7EE;
+    color: $food-green;
+  }
+
+  &.statusFailed {
+    background: #FFEBEB;
+    color: $food-red;
+  }
+}
+
+.recordReward {
+  font-size: $font-size-sm;
+  color: $text-color-primary;
+  font-weight: $font-weight-medium;
+}
+
+.recordTime {
+  font-size: $font-size-xs;
+  color: $text-color-tertiary;
+}
+
+.emptyRecords {
+  padding: $spacing-3xl;
+  text-align: center;
+}
+
+.emptyRecordsText {
+  font-size: $font-size-sm;
+  color: $text-color-tertiary;
+}

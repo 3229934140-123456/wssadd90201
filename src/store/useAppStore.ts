@@ -24,6 +24,7 @@ interface AppState {
   lastCheckInDate: string
   currentDate: string
   joinedActivities: Record<string, number>
+  userJoinedActivities: string[]
   redeemedRewards: Record<string, number>
   redeemRecords: RedeemRecord[]
   shareMealHistories: ShareMealHistory[]
@@ -51,7 +52,7 @@ interface AppState {
     remainingRewards: number
     redeemedCount: number
   }
-  joinActivity: (activityId: string) => boolean
+  joinActivity: (activityId: string) => { success: boolean; duplicated?: boolean }
   addRedeemRecord: (record: RedeemRecord) => void
   getRedeemRecords: () => RedeemRecord[]
   addShareMealHistory: (history: ShareMealHistory) => void
@@ -84,6 +85,7 @@ export const useAppStore = create<AppState>()(
       lastCheckInDate: '',
       currentDate: getToday(),
       joinedActivities: { '1': 156, '2': 89, '3': 234, '4': 67 },
+      userJoinedActivities: ['1'],
       redeemedRewards: { 'HF202601002': 1 },
       redeemRecords: [
         {
@@ -504,17 +506,22 @@ export const useAppStore = create<AppState>()(
         const state = get()
         const activity = state.activities.find(a => a.id === activityId)
         
-        if (!activity) return false
+        if (!activity) return { success: false }
+        if (state.userJoinedActivities.includes(activityId)) {
+          console.log('[Store] 重复报名活动:', activity.title)
+          return { success: false, duplicated: true }
+        }
         
         set(state => ({
           joinedActivities: {
             ...state.joinedActivities,
             [activityId]: (state.joinedActivities[activityId] || 0) + 1
-          }
+          },
+          userJoinedActivities: [...state.userJoinedActivities, activityId]
         }))
         
         console.log('[Store] 参加活动:', activity.title)
-        return true
+        return { success: true }
       },
 
       addRedeemRecord: (record) => {
