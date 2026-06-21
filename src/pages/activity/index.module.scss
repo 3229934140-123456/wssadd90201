@@ -11,7 +11,12 @@
 
 .pageHeader {
   padding: $spacing-4xl $spacing-4xl $spacing-xl;
-  text-align: center;
+}
+
+.headerRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .pageTitle {
@@ -24,6 +29,22 @@
 .pageDesc {
   font-size: $font-size-base;
   color: $text-color-secondary;
+}
+
+.adminBtn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: $spacing-xs;
+  padding: $spacing-md $spacing-lg;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: $radius-lg;
+  font-size: $font-size-xs;
+  color: $text-color-secondary;
+  
+  &:active {
+    transform: scale(0.95);
+  }
 }
 
 .activityList {

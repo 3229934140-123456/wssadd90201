@@ -39,11 +39,6 @@ const SharePage: React.FC = () => {
   }, [router.params.day])
 
   useEffect(() => {
-    const defaultSelected = presetGreenFoods.slice(0, 3).map(f => f.name)
-    setSelectedFoods(defaultSelected)
-  }, [])
-
-  useEffect(() => {
     if (selectedFoods.length > 0) {
       const imageUrl = generateShareImage({
         foods: selectedFoods,
@@ -51,6 +46,8 @@ const SharePage: React.FC = () => {
         checkInDays: user.checkInDays
       })
       setShareImageUrl(imageUrl)
+    } else {
+      setShareImageUrl('')
     }
   }, [selectedFoods, day, user.checkInDays])
 
@@ -253,7 +250,7 @@ const SharePage: React.FC = () => {
 
           <View className={styles.actionButtons}>
             <View
-              className={styles.primaryBtn}
+              className={classnames(styles.primaryBtn, selectedFoods.length === 0 && styles.disabled)}
               onClick={handleGenerateImage}
             >
               🎨 生成分享图
@@ -261,19 +258,25 @@ const SharePage: React.FC = () => {
 
             <View className={styles.btnRow}>
               <View
-                className={styles.secondaryBtn}
+                className={classnames(styles.secondaryBtn, (!shareImageUrl || selectedFoods.length === 0) && styles.disabled)}
                 onClick={handleSaveImage}
               >
                 💾 保存图片
               </View>
               <View
-                className={styles.primaryBtn}
+                className={classnames(styles.primaryBtn, (!shareImageUrl || selectedFoods.length === 0) && styles.disabled)}
                 onClick={handleShareToFriend}
               >
                 📤 分享好友
               </View>
             </View>
           </View>
+
+          {selectedFoods.length === 0 && (
+            <Text className={styles.tipsText}>
+              💡 请先选择今日合规餐单食物后，才能生成和保存或分享哦~
+            </Text>
+          )}
         </View>
       </View>
     </ScrollView>

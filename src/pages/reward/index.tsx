@@ -2,7 +2,6 @@ import React, { useState, useMemo } from 'react'
 import { View, Text, ScrollView, RefreshControl, Image } from '@tarojs/components'
 import Taro, { useDidShow } from '@tarojs/taro'
 import { useAppStore } from '@/store/useAppStore'
-import { rewards, getRewardById } from '@/data/rewards'
 import { RewardItem, UserReward } from '@/types'
 import classnames from 'classnames'
 import styles from './index.module.scss'
@@ -14,7 +13,7 @@ const RewardPage: React.FC = () => {
   const [activeTab, setActiveTab] = useState<TabType>('exchange')
   const [showExchangeModal, setShowExchangeModal] = useState(false)
   const [selectedReward, setSelectedReward] = useState<RewardItem | null>(null)
-  const { user, userRewards, consumeEnergy, addUserReward, useReward } = useAppStore()
+  const { user, userRewards, rewards, exchangeReward, useReward } = useAppStore()
 
   const handleRefresh = () => {
     setRefreshing(true)
@@ -41,19 +40,12 @@ const RewardPage: React.FC = () => {
   const handleConfirmExchange = () => {
     if (!selectedReward) return
 
-    const success = consumeEnergy(selectedReward.energyCost)
-    if (success) {
-      const newUserReward: UserReward = {
-        id: `ur${Date.now()}`,
-        rewardId: selectedReward.id,
-        reward: selectedReward,
-        code: `HF${Date.now().toString().slice(-8)}`,
-        status: 'unused',
-        obtainedAt: new Date().toISOString().split('T')[0]
-      }
-      addUserReward(newUserReward)
+    const userReward = exchangeReward(selectedReward.id)
+    if (userReward) {
       Taro.showToast({ title: '兑换成功！', icon: 'success' })
       console.log('[RewardPage] 兑换成功:', selectedReward.name)
+    } else {
+      Taro.showToast({ title: '兑换失败，请重试', icon: 'none' })
     }
     setShowExchangeModal(false)
     setSelectedReward(null)
@@ -94,7 +86,7 @@ const RewardPage: React.FC = () => {
 
   const sortedRewards = useMemo(() => {
     return [...rewards].sort((a, b) => a.energyCost - b.energyCost)
-  }, [])
+  }, [rewards])
 
   const myUnusedRewards = useMemo(() => {
     return userRewards.filter(r => r.status === 'unused')
@@ -177,7 +169,7 @@ const RewardPage: React.FC = () => {
                         )}
                         onClick={() => handleExchangeClick(reward)}
                       >
-                        兑换
+                        {reward.stock <= 0 ? '已兑完' : '兑换'}
                       </View>
                     </View>
                     <Text className={styles.stockInfo}>
@@ -209,13 +201,20 @@ const RewardPage: React.FC = () => {
                           <Text className={styles.userRewardDate}>
                             获得时间: {reward.obtainedAt}
                           </Text>
+                          {reward.reward.expiryDate && (
+                            <Text className={styles.userRewardDate}>
+                              有效期至: {reward.reward.expiryDate}
+                            </Text>
+                          )}
                         </View>
-                        <View
-                          className={styles.useRewardBtn}
-                          onClick={() => handleUseReward(reward.id)}
-                        >
-                          立即使用
-                        </View>
+                        {reward.status === 'unused' && (
+                          <View
+                            className={styles.useRewardBtn}
+                            onClick={() => handleUseReward(reward.id)}
+                          >
+                            立即使用
+                          </View>
+                        )}
                       </View>
                     </View>
                   ))}

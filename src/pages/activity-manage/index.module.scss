@@ -1,0 +1,356 @@
+@import '@/styles/variables.scss';
+
+.pageContainer {
+  min-height: 100vh;
+  background: #F5F5F5;
+}
+
+.content {
+  padding: $spacing-xl $spacing-4xl $spacing-6xl;
+}
+
+.adminHeader {
+  background: linear-gradient(135deg, $primary-color 0%, #FF9EBB 100%);
+  padding: $spacing-4xl;
+  color: #FFFFFF;
+
+  .title {
+    font-size: $font-size-xl;
+    font-weight: $font-weight-bold;
+    margin-bottom: $spacing-xs;
+  }
+
+  .subtitle {
+    font-size: $font-size-sm;
+    opacity: 0.9;
+  }
+}
+
+.activityList {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-xl;
+}
+
+.activityManageCard {
+  background: #FFFFFF;
+  border-radius: $radius-xl;
+  padding: $spacing-xl;
+  box-shadow: $shadow-sm;
+}
+
+.cardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: $spacing-lg;
+}
+
+.cardTitle {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-bold;
+  color: $text-color-primary;
+  flex: 1;
+}
+
+.cardActions {
+  display: flex;
+  gap: $spacing-sm;
+}
+
+.editBtn {
+  padding: $spacing-sm $spacing-lg;
+  background: $primary-color;
+  color: #FFFFFF;
+  font-size: $font-size-sm;
+  border-radius: $radius-full;
+
+  &:active {
+    opacity: 0.8;
+  }
+}
+
+.cardMeta {
+  display: flex;
+  gap: $spacing-lg;
+  margin-bottom: $spacing-md;
+  font-size: $font-size-sm;
+  color: $text-color-secondary;
+}
+
+.metaItem {
+  display: flex;
+  align-items: center;
+  gap: $spacing-xs;
+}
+
+.cardDesc {
+  font-size: $font-size-base;
+  color: $text-color-secondary;
+  line-height: 1.5;
+  margin-bottom: $spacing-lg;
+}
+
+.rewardMini {
+  background: #FFF5F8;
+  border-radius: $radius-lg;
+  padding: $spacing-md;
+  margin-bottom: $spacing-sm;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .rewardName {
+    font-size: $font-size-sm;
+    color: $text-color-primary;
+    font-weight: $font-weight-medium;
+  }
+
+  .rewardStock {
+    font-size: $font-size-xs;
+    color: $primary-color;
+  }
+}
+
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modalContent {
+  width: 680rpx;
+  max-height: 85vh;
+  background: #FFFFFF;
+  border-radius: $radius-2xl;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.modalHeader {
+  padding: $spacing-xl;
+  border-bottom: 1rpx solid #F0F0F0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .modalTitle {
+    font-size: $font-size-lg;
+    font-weight: $font-weight-bold;
+    color: $text-color-primary;
+  }
+
+  .closeBtn {
+    font-size: $font-size-xl;
+    color: $text-color-secondary;
+    padding: $spacing-xs;
+  }
+}
+
+.modalBody {
+  flex: 1;
+  overflow-y: auto;
+  padding: $spacing-xl;
+}
+
+.formGroup {
+  margin-bottom: $spacing-xl;
+}
+
+.formLabel {
+  font-size: $font-size-base;
+  font-weight: $font-weight-medium;
+  color: $text-color-primary;
+  margin-bottom: $spacing-sm;
+}
+
+.formInput {
+  width: 100%;
+  padding: $spacing-md $spacing-lg;
+  border: 1rpx solid #E0E0E0;
+  border-radius: $radius-lg;
+  font-size: $font-size-base;
+  color: $text-color-primary;
+  background: #FAFAFA;
+
+  &:focus {
+    border-color: $primary-color;
+    background: #FFFFFF;
+  }
+}
+
+.formTextarea {
+  width: 100%;
+  padding: $spacing-md $spacing-lg;
+  border: 1rpx solid #E0E0E0;
+  border-radius: $radius-lg;
+  font-size: $font-size-base;
+  color: $text-color-primary;
+  background: #FAFAFA;
+  min-height: 160rpx;
+}
+
+.ruleItem {
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;
+  margin-bottom: $spacing-sm;
+
+  .ruleInput {
+    flex: 1;
+    padding: $spacing-sm $spacing-md;
+    border: 1rpx solid #E0E0E0;
+    border-radius: $radius-md;
+    font-size: $font-size-sm;
+  }
+
+  .removeRuleBtn {
+    width: 56rpx;
+    height: 56rpx;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #FFE5EB;
+    color: #FF4D6D;
+    border-radius: 50%;
+    font-size: $font-size-base;
+  }
+}
+
+.addRuleBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: $spacing-xs;
+  padding: $spacing-md;
+  border: 2rpx dashed #FFB6C1;
+  border-radius: $radius-lg;
+  color: $primary-color;
+  font-size: $font-size-sm;
+  background: #FFF5F8;
+}
+
+.rewardEditItem {
+  background: #FAFAFA;
+  border-radius: $radius-lg;
+  padding: $spacing-md;
+  margin-bottom: $spacing-md;
+
+  .rewardRow {
+    display: flex;
+    align-items: center;
+    gap: $spacing-md;
+    margin-bottom: $spacing-sm;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  .rewardLabel {
+    font-size: $font-size-xs;
+    color: $text-color-secondary;
+    width: 100rpx;
+    flex-shrink: 0;
+  }
+
+  .rewardInput {
+    flex: 1;
+    padding: $spacing-xs $spacing-md;
+    border: 1rpx solid #E0E0E0;
+    border-radius: $radius-md;
+    font-size: $font-size-sm;
+    background: #FFFFFF;
+  }
+
+  .stockInput {
+    width: 160rpx;
+    padding: $spacing-xs $spacing-md;
+    border: 1rpx solid #E0E0E0;
+    border-radius: $radius-md;
+    font-size: $font-size-sm;
+    text-align: center;
+    background: #FFFFFF;
+  }
+}
+
+.dateRow {
+  display: flex;
+  gap: $spacing-md;
+}
+
+.dateItem {
+  flex: 1;
+
+  .dateInput {
+    width: 100%;
+    padding: $spacing-md;
+    border: 1rpx solid #E0E0E0;
+    border-radius: $radius-lg;
+    font-size: $font-size-sm;
+    background: #FAFAFA;
+    text-align: center;
+  }
+}
+
+.modalFooter {
+  padding: $spacing-lg $spacing-xl;
+  border-top: 1rpx solid #F0F0F0;
+  display: flex;
+  gap: $spacing-lg;
+}
+
+.modalBtn {
+  flex: 1;
+  padding: $spacing-lg;
+  border-radius: $radius-lg;
+  text-align: center;
+  font-size: $font-size-base;
+  font-weight: $font-weight-medium;
+
+  &.cancel {
+    background: #F5F5F5;
+    color: $text-color-secondary;
+  }
+
+  &.confirm {
+    background: $primary-color;
+    color: #FFFFFF;
+  }
+}
+
+.sectionTitle {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-bold;
+  color: $text-color-primary;
+  margin: $spacing-xl 0 $spacing-lg;
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;
+}
+
+.emptyState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: $spacing-6xl $spacing-4xl;
+
+  .emptyIcon {
+    font-size: 100rpx;
+    margin-bottom: $spacing-xl;
+  }
+
+  .emptyText {
+    font-size: $font-size-base;
+    color: $text-color-secondary;
+    text-align: center;
+  }
+}

@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { View, Text, ScrollView, RefreshControl, Image } from '@tarojs/components'
 import Taro, { useDidShow } from '@tarojs/taro'
-import { activities } from '@/data/activities'
+import { useAppStore } from '@/store/useAppStore'
 import { ActivityItem } from '@/types'
 import classnames from 'classnames'
 import styles from './index.module.scss'
@@ -10,6 +10,7 @@ const ActivityPage: React.FC = () => {
   const [refreshing, setRefreshing] = useState(false)
   const [expandedId, setExpandedId] = useState<string | null>(null)
   const [joinedActivities, setJoinedActivities] = useState<string[]>(['1'])
+  const { activities } = useAppStore()
 
   const handleRefresh = () => {
     setRefreshing(true)
@@ -92,8 +93,19 @@ const ActivityPage: React.FC = () => {
       }
     >
       <View className={styles.pageHeader}>
-        <Text className={styles.pageTitle}>🎊 精彩活动</Text>
-        <Text className={styles.pageDesc}>参与活动，赢取更多奖励</Text>
+        <View className={styles.headerRow}>
+          <View>
+            <Text className={styles.pageTitle}>🎊 精彩活动</Text>
+            <Text className={styles.pageDesc}>参与活动，赢取更多奖励</Text>
+          </View>
+          <View 
+            className={styles.adminBtn}
+            onClick={() => Taro.navigateTo({ url: '/pages/activity-manage/index' })}
+          >
+            <Text>⚙️</Text>
+            <Text>门店管理</Text>
+          </View>
+        </View>
       </View>
 
       <View className={styles.content}>

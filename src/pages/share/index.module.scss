@@ -273,3 +273,23 @@
   color: $primary-color;
   font-weight: $font-weight-medium;
 }
+
+.primaryBtn.disabled,
+.secondaryBtn.disabled {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.secondaryBtn.disabled {
+  border-color: #CCCCCC;
+  color: #999999;
+}
+
+.tipsText {
+  display: block;
+  margin-top: $spacing-lg;
+  font-size: $font-size-sm;
+  color: $text-color-secondary;
+  text-align: center;
+  line-height: 1.5;
+}

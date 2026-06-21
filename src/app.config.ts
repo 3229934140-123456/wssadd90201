@@ -10,7 +10,8 @@ export default defineAppConfig({
     'pages/food-detail/index',
     'pages/task-detail/index',
     'pages/share/index',
-    'pages/comfort/index'
+    'pages/comfort/index',
+    'pages/activity-manage/index'
   ],
   window: {
     backgroundTextStyle: 'light',

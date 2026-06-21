@@ -14,7 +14,7 @@ const ChallengePage: React.FC = () => {
   const [tab, setTab] = useState<TaskTab>('all')
   const [refreshing, setRefreshing] = useState(false)
   const [supervisorCode, setSupervisorCode] = useState('HF8X2K9M')
-  const { tasks, user, completeTask, addEnergy, currentProject } = useAppStore()
+  const { tasks, user, completeTask, addEnergy, currentProject, todayCheckIn, checkAndDoDailyCheckIn } = useAppStore()
 
   const filteredTasks = useMemo(() => {
     switch (tab) {
@@ -45,7 +45,20 @@ const ChallengePage: React.FC = () => {
   }
 
   const handleCompleteTask = (taskId: string) => {
-    completeTask(taskId)
+    const success = completeTask(taskId)
+    if (success) {
+      const state = useAppStore.getState()
+      const completedCount = state.tasks.filter(t => t.status === 'completed').length
+      const totalUnlocked = state.tasks.filter(t => t.status !== 'locked').length
+      
+      if (completedCount === totalUnlocked) {
+        Taro.showToast({ 
+          title: '太棒了！今日任务全部完成，自动打卡+30能量', 
+          icon: 'none',
+          duration: 2500
+        })
+      }
+    }
   }
 
   const handleViewTaskDetail = (taskId: string) => {
@@ -84,11 +97,19 @@ const ChallengePage: React.FC = () => {
   }
 
   const handleCheckIn = () => {
-    if (pendingCount === 0) {
-      Taro.showToast({ title: '今日已全部打卡！', icon: 'none' })
+    if (todayCheckIn) {
+      Taro.showToast({ title: '今日已完成打卡', icon: 'success' })
       return
     }
-    Taro.showToast({ title: '请先完成下方任务', icon: 'none' })
+    if (pendingCount > 0) {
+      Taro.showToast({ title: '请先完成所有今日任务', icon: 'none' })
+      return
+    }
+    
+    const success = checkAndDoDailyCheckIn()
+    if (success) {
+      Taro.showToast({ title: '打卡成功！+30能量', icon: 'success' })
+    }
   }
 
   useDidShow(() => {
